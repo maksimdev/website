@@ -1,0 +1,21 @@
+.tableHeader {
+    background-color: #94d2ff;
+}
+
+.tableWrapper {
+    width: 30%;
+    min-width: 650px;
+}
+
+.tableContainer {
+    min-height: 50px;
+}
+
+.spiner {
+    margin: auto;
+}
+
+.spinerContainer {
+   width: 80px;
+   margin: 3rem auto ;
+}
