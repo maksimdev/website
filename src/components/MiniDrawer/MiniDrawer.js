@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route, Link } from "react-router-dom";
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -15,13 +16,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+
 import { mainRoutes } from '../../routes/routes';
-import Budget from '../Budget/Budget copy';
+import Budget from '../Budget/Budget';
 import Income from '../Budget/Income';
-
 import { ShopingCard } from '../ShopingCard/ShopingCard';
-import { Switch, Route, Link } from "react-router-dom";
-
 import './style.css'
 
 const drawerWidth = 240;
@@ -165,7 +164,10 @@ export default function MiniDrawer() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
             <Switch>
-              <Route exact path='/budget'><Income /><br /><br /><Budget /></Route>
+              <Route exact path='/budget'>
+                <Income /><br /><br />
+                <Budget />
+              </Route>
               <Route path='/shopingCard'><ShopingCard /></Route>
             </Switch>
         </main>
