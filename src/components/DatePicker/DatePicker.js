@@ -13,11 +13,11 @@ export default function MaterialUIPickers(props) {
       <Grid container justify="space-around">
       <KeyboardDatePicker
         disableToolbar
+        autoOk={true}
         variant="inline"
-        format="MM/dd/yyyy"
+        format="yyyy/MM/dd"
         margin="normal"
         id="date-picker-inline"
-        label="Date picker inline"
         value={props.value}
         onChange={props.onChange}
         KeyboardButtonProps={{

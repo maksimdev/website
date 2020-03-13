@@ -46,7 +46,7 @@ export default class Budget extends React.Component {
         [
           {
             title: 'Категория',
-            field: 'category',
+            field: 'category_id',
             lookup: {
               1: 'Продукты',
               2: 'Кредиты',
@@ -72,66 +72,59 @@ export default class Budget extends React.Component {
           { title: 'Сумма (руб.)', field: 'cost'},
           {
             title: 'Дата', field: 'date',
-            editComponent: props => {
-              console.log(props);
-              return <MaterialUIPickers />;
-            } 
+            editComponent: props => (<MaterialUIPickers value={props.value} onChange={props.onChange} />)
           },
         ],
       data: []
     }
-  }
+  };
 
   componentDidMount() {
     Api.getList().then((data)=>{
       this.setState({ data })
     })
-  }
+  };
+
+  onCreatePurchase = (newPurchase) =>
+    Api.createPurchase(newPurchase)
+      .then(
+        receivedData => this.setState(
+          prevState => ({ ...prevState, data: [...prevState.data, receivedData] })
+        )
+      );
+
+  onUpdatePurchase = (newData, oldData) => 
+    Api.updatePurchase(newData).then((receivedData) => {
+      this.setState(prevState => {
+        const data = [...prevState.data];
+        data[data.indexOf(oldData)] = receivedData;
+        return { ...prevState, data };
+      });
+    });
+
+  onRemovePurchase = oldData => 
+    Api.removePurchase(oldData.id)
+      .then(receivedData => 
+        this.setState(
+          prevState => ({
+            ...prevState,
+            data: prevState.data.filter(item => item.id !== receivedData.id) })
+        )
+      );
 
   render() {
     return(
       <MaterialTable
-        style={ {width: '50%'} }
+        style={{ width: '50%' }}
         title="Расходы"
         columns={ this.state.columns }
         data={ this.state.data }
         options={ options }
         localization={ localization }
         editable={{
-          onRowAdd: newData =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                this.setState(prevState => {
-                  const data = [...prevState.data];
-                  data.push(newData);
-                  return { ...prevState, data };
-                }, resolve);
-              }, 600);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                if (oldData) {
-                  this.setState(prevState => {
-                    const data = [...prevState.data];
-                    data[data.indexOf(oldData)] = newData;
-                    return { ...prevState, data };
-                  });
-                }
-              }, 600);
-            }),
-          onRowDelete: oldData =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                this.setState(prevState => {
-                  const data = [...prevState.data];
-                  data.splice(data.indexOf(oldData), 1);
-                  return { ...prevState, data };
-                });
-              }, 600);
-            }),
+          onRowAdd: this.onCreatePurchase,
+          onRowUpdate: this.onUpdatePurchase,
+          onRowDelete: this.onRemovePurchase
         }}
       />
     )
