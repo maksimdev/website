@@ -13,7 +13,9 @@ export const addCategoriesToColumns = (categories, columns) => {
     lookup: convertArrCategoriesToObj(categories)
   };
   return updateColumns;
-} 
+};
+
+export const isValidPurchase = ({ category_id, cost, date }) => (category_id && cost && date) ? true : false;
 
 const title = 'Расходы';
 const options = {
@@ -86,13 +88,14 @@ export default class Budget extends React.Component {
     });
   };
 
-  onCreatePurchase = (newPurchase) =>
-    Api.createPurchase(newPurchase)
+  onCreatePurchase = ({ category_id, cost, date = new Date() }) => {
+    const newPurchase = { category_id, cost, date };
+    return isValidPurchase(newPurchase) ? Api.createPurchase(newPurchase)
       .then(
         receivedData => this.setState(
           prevState => ({ ...prevState, data: [...prevState.data, receivedData] })
-        )
-      );
+        )) : Promise.resolve().then(() => console.log('Error: Please select values')); //should be changed to validation for fields
+  };
 
   onUpdatePurchase = (newData, oldData) => 
     Api.updatePurchase(newData).then((receivedData) => {
