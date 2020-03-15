@@ -19,7 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import { mainRoutes } from '../../routes/routes';
 import Budget from '../Budget/Budget';
-import Income from '../Budget/Income';
+import Income from '../Income/Income';
 import { ShopingCard } from '../ShopingCard/ShopingCard';
 import './style.css'
 

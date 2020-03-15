@@ -1,7 +1,9 @@
 const URL = 'https://eax6ihrnwd.execute-api.us-east-1.amazonaws.com';
 
 export const Api = {
-    getList: () => fetch(`${URL}/dev/purchases`)
+    getCategories: () => fetch(`${URL}/dev/categories`)
+        .then((response) => response.json()),
+    getPurchases: () => fetch(`${URL}/dev/purchases`)
         .then((response) => response.json()),
     createPurchase: purchase => fetch(
         `${URL}/dev/purchase`,

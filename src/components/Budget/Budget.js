@@ -3,6 +3,19 @@ import MaterialTable from 'material-table';
 import { Api } from '../../api/Api';
 import MaterialUIPickers from '../DatePicker/DatePicker';
 
+export const convertArrCategoriesToObj = categories => categories.reduce(
+  (acc, currentValue) => ({ ...acc, [currentValue.id]: currentValue.title }), {});
+
+export const addCategoriesToColumns = (categories, columns) => {
+  const updateColumns = [ ...columns ];
+  updateColumns[0] = {
+    ...updateColumns[0],
+    lookup: convertArrCategoriesToObj(categories)
+  };
+  return updateColumns;
+} 
+
+const title = 'Расходы';
 const options = {
   headerStyle: {
     backgroundColor: '#01579b',
@@ -38,6 +51,8 @@ const localization = {
   },
 };
 
+const style = { width: '50%' };
+
 export default class Budget extends React.Component {
   constructor(props) {
     super(props);
@@ -47,27 +62,7 @@ export default class Budget extends React.Component {
           {
             title: 'Категория',
             field: 'category_id',
-            lookup: {
-              1: 'Продукты',
-              2: 'Кредиты',
-              3: 'Косметика',
-              4: 'Медицина',
-              5: 'Кот',
-              6: 'Комуналка',
-              7: 'Связь',
-              8: 'Транспорт',
-              9: 'Подарки',
-              10: 'Рестораны',
-              11: 'Игры',
-              12: 'Автомобиль',
-              13: 'Развлечения',
-              14: 'Быт.химия',
-              15: 'Одежда',
-              16: 'Доставка',
-              17: '"В карман"',
-              18: 'Всё для дома',
-              19: 'Техника '
-            }
+            lookup: {}
           },
           { title: 'Сумма (руб.)', field: 'cost'},
           {
@@ -80,9 +75,15 @@ export default class Budget extends React.Component {
   };
 
   componentDidMount() {
-    Api.getList().then((data)=>{
-      this.setState({ data })
-    })
+    Promise.all([
+      Api.getPurchases(),
+      Api.getCategories()
+    ]).then(([purchases, categories]) => {
+      this.setState(prevState => ({
+        columns: addCategoriesToColumns(categories, prevState.columns),
+        data: purchases
+      }))
+    });
   };
 
   onCreatePurchase = (newPurchase) =>
@@ -113,12 +114,13 @@ export default class Budget extends React.Component {
       );
 
   render() {
+    const { columns, data } = this.state;
     return(
       <MaterialTable
-        style={{ width: '50%' }}
-        title="Расходы"
-        columns={ this.state.columns }
-        data={ this.state.data }
+        style={ style }
+        title={ title }
+        columns={ columns }
+        data={ data }
         options={ options }
         localization={ localization }
         editable={{
