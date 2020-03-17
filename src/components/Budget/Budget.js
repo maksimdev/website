@@ -2,6 +2,7 @@ import React from 'react';
 import MaterialTable from 'material-table';
 import { Api } from '../../api/Api';
 import MaterialUIPickers from '../DatePicker/DatePicker';
+import { Chart } from '../Chart/Chart'
 
 export const convertArrCategoriesToObj = categories => categories.reduce(
   (acc, currentValue) => ({ ...acc, [currentValue.id]: currentValue.title }), {});
@@ -72,7 +73,8 @@ export default class Budget extends React.Component {
             editComponent: props => (<MaterialUIPickers value={props.value} onChange={props.onChange} />)
           },
         ],
-      data: []
+      data: [],
+      categories: []
     }
   };
 
@@ -83,7 +85,8 @@ export default class Budget extends React.Component {
     ]).then(([purchases, categories]) => {
       this.setState(prevState => ({
         columns: addCategoriesToColumns(categories, prevState.columns),
-        data: purchases
+        data: purchases,
+        categories
       }))
     });
   };
@@ -117,21 +120,27 @@ export default class Budget extends React.Component {
       );
 
   render() {
-    const { columns, data } = this.state;
+    const { columns, data, categories } = this.state;
     return(
-      <MaterialTable
-        style={ style }
-        title={ title }
-        columns={ columns }
-        data={ data }
-        options={ options }
-        localization={ localization }
-        editable={{
-          onRowAdd: this.onCreatePurchase,
-          onRowUpdate: this.onUpdatePurchase,
-          onRowDelete: this.onRemovePurchase
-        }}
-      />
+      <>
+        <Chart 
+          data={data}
+          categories={categories}
+        />
+        <MaterialTable
+          style={ style }
+          title={ title }
+          columns={ columns }
+          data={ data }
+          options={ options }
+          localization={ localization }
+          editable={{
+            onRowAdd: this.onCreatePurchase,
+            onRowUpdate: this.onUpdatePurchase,
+            onRowDelete: this.onRemovePurchase
+          }}
+        />
+      </>
     )
   }
 }
