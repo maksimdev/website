@@ -2,7 +2,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import './style.css';
 
-const colors = [
+const existedColors = [
   '#FF6384',
   '#36A2EB',
   '#FFCE56',
@@ -44,7 +44,8 @@ const prepareDate = (data, categories) => {
 
   const combinedData = combineCategoryAndCostsToArrOfObj(aggregatedData, categories)
 
-  const reverse = colors.reverse();
+  const colors = existedColors.slice(0, combinedData.length);
+
   return {
     labels: combinedData.map(item => Object.keys(item)[0]),
     datasets: [{
