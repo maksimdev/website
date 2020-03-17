@@ -16,12 +16,10 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import Budget from '../../components/Budget/Budget';
 import { mainRoutes } from '../../routes/routes';
-import Budget from '../Budget/Budget';
-import Income from '../Income/Income';
 import { ShopingCard } from '../ShopingCard/ShopingCard';
-import './style.css'
+import './style.css';
 
 const drawerWidth = 240;
 
@@ -165,7 +163,6 @@ export default function MiniDrawer() {
           <div className={classes.toolbar} />
             <Switch>
               <Route exact path='/budget'>
-                <Income /><br /><br />
                 <Budget />
               </Route>
               <Route path='/shopingCard'><ShopingCard /></Route>

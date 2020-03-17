@@ -54,7 +54,7 @@ const localization = {
   },
 };
 
-const style = { width: '50%' };
+const style = { width: '100%' };
 
 export default class Budget extends React.Component {
   constructor(props) {
@@ -123,10 +123,11 @@ export default class Budget extends React.Component {
     const { columns, data, categories } = this.state;
     return(
       <>
-        <Chart 
+        <Chart
           data={data}
           categories={categories}
         />
+        <br />
         <MaterialTable
           style={ style }
           title={ title }

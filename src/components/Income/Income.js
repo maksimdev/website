@@ -30,7 +30,7 @@ export default class Income extends React.Component {
   render() {
     return(
       <MaterialTable
-        style={ {width: '50%'} }
+        style={ {width: '100%'} }
         title="Доходы"
         columns={this.state.columns}
         data={this.state.data}

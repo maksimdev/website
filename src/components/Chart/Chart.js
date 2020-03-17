@@ -1,5 +1,6 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import './style.css';
 
 const colors = [
   '#FF6384',
@@ -54,6 +55,8 @@ const prepareDate = (data, categories) => {
   };
 }
 
+const total = data => data.reduce((acc, { cost }) => {return cost + acc}, 0)
+
 export class Chart extends React.Component {
     constructor(props) {
       super(props);
@@ -61,14 +64,27 @@ export class Chart extends React.Component {
     }
   
     render() {
-      console.log(this.props)
-      prepareDate(this.props.data, this.props.categories);
-
       return (
-        <Doughnut
-            ref={this.chartReference}
-            data={prepareDate(this.props.data, this.props.categories)}
-        />
+        <div className="chartWrapper">
+          <span className="chartTitle">{total(this.props.data)} руб</span>
+          <Doughnut
+              ref={this.chartReference}
+              data={prepareDate(this.props.data, this.props.categories)}
+              width={500}
+              height={500}
+              options={{
+                title: {
+                  display: true,
+                  text: 'Расходы за текущий месяц'
+                },
+                legend: {
+                  display: true,
+                  position: 'bottom'
+                },
+                maintainAspectRatio: false
+              }}
+          />
+        </div>
         )
     }
   }
