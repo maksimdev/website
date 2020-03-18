@@ -3,6 +3,8 @@ import MaterialTable from 'material-table';
 import { Api } from '../../api/Api';
 import MaterialUIPickers from '../DatePicker/DatePicker';
 import { Chart } from '../Chart/Chart'
+import moment from 'moment';
+import DateSwitcher from '../DateSwitcher/DateSwitcher';
 
 export const convertArrCategoriesToObj = categories => categories.reduce(
   (acc, currentValue) => ({ ...acc, [currentValue.id]: currentValue.title }), {});
@@ -74,13 +76,14 @@ export default class Budget extends React.Component {
           },
         ],
       data: [],
-      categories: []
+      categories: [],
+      currentDate: moment().format('YYYY-MM')
     }
   };
 
   componentDidMount() {
     Promise.all([
-      Api.getPurchases(),
+      Api.getPurchases(moment().format('YYYY-MM')),
       Api.getCategories()
     ]).then(([purchases, categories]) => {
       this.setState(prevState => ({
@@ -90,6 +93,24 @@ export default class Budget extends React.Component {
       }))
     });
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('prevState: ', prevState);
+    console.log('this.state.: ', this.state);
+    prevState.currentDate !== this.state.currentDate
+    ? Api.getPurchases(this.state.currentDate)
+        .then((purchases) => {
+          this.setState(prevState => ({ data: purchases }));
+        }) : null
+  }
+
+  onChangeMonthBack = () => this.setState((prevState) => ({
+      currentDate: moment(prevState.currentDate).subtract(1, 'month').format('YYYY-MM')
+  }));
+
+  onChangeMonthForward = () => this.setState((prevState) => ({
+      currentDate: moment(prevState.currentDate).add(1, 'month').format('YYYY-MM')
+  }));
 
   onCreatePurchase = ({ category_id, cost, date = new Date() }) => {
     const newPurchase = { category_id, cost, date };
@@ -120,6 +141,7 @@ export default class Budget extends React.Component {
       );
 
   render() {
+    // console.log('current: ', this.state.currentDate);
     const { columns, data, categories } = this.state;
     return(
       <>
@@ -128,6 +150,12 @@ export default class Budget extends React.Component {
           categories={categories}
         />
         <br />
+        <DateSwitcher
+          onChangeMonthBack={() => this.onChangeMonthBack()}
+          onChangeMonthForward={() => this.onChangeMonthForward()}
+        >
+          {this.state.currentDate}
+        </DateSwitcher>
         <MaterialTable
           style={ style }
           title={ title }
