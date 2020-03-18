@@ -5,10 +5,10 @@ import './style.css';
 
 export default function DateSwitcher({children, onChangeMonthBack, onChangeMonthForward}) {
   return (
-    <span className="switcher">
-      <ArrowBack onClick={onChangeMonthBack} />
-        {children}
-      <ArrowForward onClick={onChangeMonthForward} />
-    </span>
+    <div className="switcher">
+      <ArrowBack onClick={onChangeMonthBack} className="icon"/>
+        <span className="text">{children}</span>
+      <ArrowForward onClick={onChangeMonthForward} className="icon" />
+    </div>
   );
 }

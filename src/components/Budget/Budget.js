@@ -77,7 +77,8 @@ export default class Budget extends React.Component {
         ],
       data: [],
       categories: [],
-      currentDate: moment().format('YYYY-MM')
+      currentDate: moment().format('YYYY-MM-DD'),
+      isLoading: false
     }
   };
 
@@ -95,21 +96,21 @@ export default class Budget extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('prevState: ', prevState);
-    console.log('this.state.: ', this.state);
     prevState.currentDate !== this.state.currentDate
-    ? Api.getPurchases(this.state.currentDate)
+    ? Api.getPurchases(moment(this.state.currentDate).format('YYYY-MM'))
         .then((purchases) => {
-          this.setState(prevState => ({ data: purchases }));
+          this.setState(prevState => ({ isLoading: false, data: purchases }));
         }) : null
   }
 
   onChangeMonthBack = () => this.setState((prevState) => ({
-      currentDate: moment(prevState.currentDate).subtract(1, 'month').format('YYYY-MM')
+    isLoading: true,
+    currentDate: moment(prevState.currentDate).subtract(1, 'month').format('YYYY-MM-DD')
   }));
 
   onChangeMonthForward = () => this.setState((prevState) => ({
-      currentDate: moment(prevState.currentDate).add(1, 'month').format('YYYY-MM')
+    isLoading: true,
+    currentDate: moment(prevState.currentDate).add(1, 'month').format('YYYY-MM-DD')
   }));
 
   onCreatePurchase = ({ category_id, cost, date = new Date() }) => {
@@ -141,21 +142,22 @@ export default class Budget extends React.Component {
       );
 
   render() {
-    // console.log('current: ', this.state.currentDate);
-    const { columns, data, categories } = this.state;
+    const { columns, data, categories, isLoading } = this.state;
     return(
       <>
+        <DateSwitcher
+          onChangeMonthBack={() => isLoading ? null : this.onChangeMonthBack()}
+          onChangeMonthForward={() => isLoading ? null : this.onChangeMonthForward()}
+          isLoading={isLoading}
+        >
+          {moment(this.state.currentDate).format('YYYY-MM')}
+        </DateSwitcher>
+        <br />
         <Chart
           data={data}
           categories={categories}
         />
         <br />
-        <DateSwitcher
-          onChangeMonthBack={() => this.onChangeMonthBack()}
-          onChangeMonthForward={() => this.onChangeMonthForward()}
-        >
-          {this.state.currentDate}
-        </DateSwitcher>
         <MaterialTable
           style={ style }
           title={ title }
