@@ -19,6 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Budget from '../../components/Budget/Budget';
 import { mainRoutes } from '../../routes/routes';
 import { ShopingCard } from '../ShopingCard/ShopingCard';
+import BillsContainer from '../../containers/BillsContainer/BillsContainer';
 import './style.css';
 
 const drawerWidth = 240;
@@ -162,9 +163,8 @@ export default function MiniDrawer() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
             <Switch>
-              <Route exact path='/budget'>
-                <Budget />
-              </Route>
+              <Route exact path='/budget'><Budget /></Route>
+              <Route exact path='/bill'><BillsContainer /></Route>
               <Route path='/shopingCard'><ShopingCard /></Route>
             </Switch>
         </main>
