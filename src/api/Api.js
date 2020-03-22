@@ -33,6 +33,10 @@ export const Api = {
           method: 'DELETE'
         }
         )
-        .then((response) => response.json())
+        .then((response) => response.json()),
+    getBill: (fn, fd, fp) => fetch(`${URL}/dev/bills?FN=${fn}&FD=${fd}&FDP=${fp}`)
+        .then((response) => response.json()),
+    saveBill: (fn, fd, fp) => fetch(`${URL}/dev/savebill?FN=${fn}&FD=${fd}&FDP=${fp}`)
+        .then((response) => response.json()),
 };
 

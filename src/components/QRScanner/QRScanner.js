@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Grid from '@material-ui/core/Grid';
 import jsQR from "jsqr";
 
 export default function({ setData }) {
@@ -36,7 +37,6 @@ export default function({ setData }) {
         setData(prepareData(qrCode.data))
       }
       }, 100);
-      console.log('intervalId:', intervalId);
     }
 
     return () => {
@@ -46,5 +46,11 @@ export default function({ setData }) {
     }
   }, []);
 
-  return isScanning ? (<video id="video" width="320" height="240" autoPlay></video>) : <>NEXT</>;
+  return (
+    <>
+      <Grid item xs={12}>
+        {isScanning ? (<video id="video" width="320" height="240" autoPlay></video>) : null }
+      </ Grid>
+    </>
+  );
 };

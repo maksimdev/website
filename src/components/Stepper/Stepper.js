@@ -5,16 +5,17 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import CropFree from '@material-ui/icons/CropFree';
+import Done from '@material-ui/icons/Done';
 import Save from '@material-ui/icons/Save';
 import Search from '@material-ui/icons/Search';
-import GetApp from '@material-ui/icons/GetApp';
+import Grid from '@material-ui/core/Grid';
 import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ScanningQR from './Stages/ScanningQR';
 import SearchingBill from './Stages/SearchingBill';
-import GettingBill from './Stages/GettingBill';
 import SavingBill from './Stages/SavingBill';
+import FinishStage from './Stages/FinishStage';
 
 const ColorlibConnector = withStyles({
   alternativeLabel: {
@@ -70,8 +71,8 @@ function ColorlibStepIcon(props) {
   const icons = {
     1: <CropFree />,
     2: <Search />,
-    3: <GetApp />,
-    4: <Save />
+    3: <Save />,
+    4: <Done />
   };
 
   return (
@@ -90,6 +91,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
+  сontent: {
+    marginTop: '10pt',
+    flexGrow: 1,
+  },
   button: {
     marginRight: theme.spacing(1),
   },
@@ -100,36 +105,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getSteps() {
-  return ['Считывние QR-кода', 'Поиск чека', 'Загрузка чека', 'Сохранение чека'];
+  return ['Считывние QR-кода', 'Поиск чека', 'Сохранение чека', 'Готово'];
 }
 
 export default function CustomStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [ requisites, setRequisites ] = useState({});
+  const [ bill, setBill ] = useState({});
+  const [ saveBill, setSaveBill ] = useState(false);
 
   const requesitesSuccess = (data) => {
     setRequisites(data);
     handleNext();
   }
 
-  const [ bill, setBill ] = useState({});
-  const steps = getSteps();
-
-  const getStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return <ScanningQR setData={requesitesSuccess} />;
-      case 1:
-        return <SearchingBill requisites={requisites}/>;
-      case 2:
-        return <GettingBill />;
-      case 3:
-        return <SavingBill />;
-      default:
-        return 'Unknown step';
-    }
+  const billSuccess = (data) => {
+    setBill(data);
+    handleNext();
   }
+
+  const saveBillSuccess = (data) => {
+    setSaveBill(data);
+    handleNext();
+  }
+
+  const steps = getSteps();
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -142,6 +143,21 @@ export default function CustomStepper() {
   const handleReset = () => {
     setActiveStep(0);
   };
+  
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return <ScanningQR setData={requesitesSuccess} />;
+      case 1:
+        return <SearchingBill requisites={requisites} setData={billSuccess}/>;
+      case 2:
+        return <SavingBill requisites={requisites} bill={bill} saveBill={saveBill} setData={saveBillSuccess}/>;
+      case 3:
+        return <FinishStage handleReset={handleReset}/>;
+      default:
+        return 'Unknown step';
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -152,42 +168,26 @@ export default function CustomStepper() {
           </Step>
         ))}
       </Stepper>
-      <div>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset} className={classes.button}>
-              Reset
+      <div className={classes.сontent}>
+        <Grid
+          container
+          spacing={3}
+          direction="row"
+          justify="center"
+          alignItems="center"
+        >
+        {
+          (activeStep !== (steps.length - 1) && activeStep ) ? (
+            <Grid item align="center" xs={12}>
+            <Button disabled={activeStep === 0} color="primary" onClick={handleBack} className={classes.button}>
+              Назад
             </Button>
-          </div>
-        ) : (
-          <div>
-            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-              Back
-            </Button>
-            {getStepContent(activeStep)}
-          </div>
-        )}
+          </Grid>
+          ) : null
+        }
+        {getStepContent(activeStep)}
+        </Grid>
       </div>
     </div>
   );
 }
-
-
-/*
-<div>
-              <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </div>
-             */

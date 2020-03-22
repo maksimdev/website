@@ -16,22 +16,8 @@ const useStyles = makeStyles(theme => ({
 export default function() {
   const classes = useStyles();
 
-    // case 0:
-    //   return <ScanningQR />;
-    // case 1:
-    //   return <SearchingBill />;
-    // case 2:
-    //   return <GettingBill />;
-    // case 3:
-    //   return <SavingBill />;
-
-  const [ requisites, setRequisites ] = useState({});
-  const [ bill, setBill ] = useState({});
-
   return (
     <div>
-      BillsContainer
-
       <Stepper />
       {/* {JSON.stringify(requisites)}
       <QRScanner setData={setRequisites} />
