@@ -34,9 +34,11 @@ export const Api = {
         }
         )
         .then((response) => response.json()),
-    getBill: (fn, fd, fp) => fetch(`${URL}/dev/bills?FN=${fn}&FD=${fd}&FDP=${fp}`)
+    checkBill: (fn, fd, fp, time, sum) => fetch(`${URL}/dev/checkbill?fn=${fn}&fd=${fd}&fp=${fp}&time=${time}&sum=${sum}`)
         .then((response) => response.json()),
-    saveBill: (fn, fd, fp) => fetch(`${URL}/dev/savebill?FN=${fn}&FD=${fd}&FDP=${fp}`)
+    getBill: (fn, fd, fp) => fetch(`${URL}/dev/bill?fn=${fn}&fd=${fd}&fp=${fp}`)
+        .then((response) => response.json()),
+    saveBill: (fn, fd, fp) => fetch(`${URL}/dev/savebill?fn=${fn}&fd=${fd}&fp=${fp}`)
         .then((response) => response.json()),
 };
 

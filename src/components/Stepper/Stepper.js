@@ -121,6 +121,7 @@ export default function CustomStepper() {
   }
 
   const billSuccess = (data) => {
+    console.log('Go to next page');
     setBill(data);
     handleNext();
   }

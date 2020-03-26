@@ -47,10 +47,8 @@ export default function({ setData }) {
   }, []);
 
   return (
-    <>
-      <Grid item xs={12}>
-        {isScanning ? (<video id="video" width="320" height="240" autoPlay></video>) : null }
-      </ Grid>
-    </>
+    <Grid item align="center" xs={12}>
+      {isScanning ? (<video id="video" width="320" height="240" autoPlay></video>) : null}
+    </Grid>
   );
 };

@@ -17,6 +17,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Budget from '../../components/Budget/Budget';
+import Auth from '../../containers/Auth/Auth';
 import { mainRoutes } from '../../routes/routes';
 import { ShopingCard } from '../ShopingCard/ShopingCard';
 import BillsContainer from '../../containers/BillsContainer/BillsContainer';
@@ -163,6 +164,7 @@ export default function MiniDrawer() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
             <Switch>
+              <Route exact path='/auth'><Auth /></Route>
               <Route exact path='/budget'><Budget /></Route>
               <Route exact path='/bill'><BillsContainer /></Route>
               <Route path='/shopingCard'><ShopingCard /></Route>
