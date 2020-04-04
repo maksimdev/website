@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,17 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import BG from '../../assets/images/bg.jpg';
+import { authorize } from '../../redux/reducers/authReducer';
+
+import {
+  useHistory,
+  useLocation
+} from "react-router-dom";
+import { connect } from 'react-redux';
+
+const mapDispatchToProps = dispatch => ({
+  logIn: (user, password) => dispatch(authorize({ user, password })) 
+});
 
 function Copyright() {
   return (
@@ -53,8 +64,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+function SignIn(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const classes = useStyles();
+  let history = useHistory();
+  let location = useLocation();
+
+  let { from } = location.state || { from: { pathname: "/" } };
+  let login = (email, password) => {
+    props.logIn(email, password);
+    // fakeAuth.authenticate(() => {
+    //   history.replace(from);
+    // });
+  };
 
   return (
     <div className={classes.main}>
@@ -78,6 +101,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={event => setEmail(event.target.value)}
           />
           <TextField
             variant="outlined"
@@ -89,17 +114,20 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password}
+            onChange={event => setPassword(event.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button
-            type="submit"
+            //type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => login(email, password)}
           >
             Вход
           </Button>
@@ -123,4 +151,6 @@ export default function SignIn() {
     </Container>
     </div>
   );
-}
+};
+
+export default connect(null, mapDispatchToProps)(SignIn);

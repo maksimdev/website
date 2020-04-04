@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Dashboard from '../Dashboard/Dashboard';
+import Main from '../Main/Main';
 
 export default class App extends Component {
   constructor(props) {
@@ -7,10 +7,6 @@ export default class App extends Component {
   }
 
   render() {
-    return (
-      <>
-        <Dashboard />
-      </>
-    );
+    return (<Main />);
   }
 }

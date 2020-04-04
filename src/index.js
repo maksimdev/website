@@ -1,18 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from "react-router-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import App from './componentsnew/App/App';
-import SignIn from './componentsnew/SignIn/SignIn';
-import SignUp from './componentsnew/SignUp/SignUp';
-//import './style.css';
 import { store } from './redux/store';
+import { syncHistoryWithStore } from 'react-router-redux';
+import { createBrowserHistory } from 'history';
+
+import Auth from './componentsnew/Auth/Auth';
+
+const history = syncHistoryWithStore(createBrowserHistory(), store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>  
-      <App />
-    </Router>
+    <Auth history={history} />
   </Provider>,
-  document.getElementById("root")
-);
+  document.getElementById('root')
+)
