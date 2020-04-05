@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import BG from '../../assets/images/bg.jpg';
-import { authorize } from '../../redux/saga/appSaga';
+import { authorize } from '../../redux/saga/authSaga';
 import {
   useHistory,
   useLocation

@@ -1,6 +1,18 @@
-const URL = 'https://67cc2d25ba.execute-api.us-east-1.amazonaws.com';
+const URL = 'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';
 
 export const Api = {
+    login: (user, password) => fetch(
+      `${URL}/dev/login`,
+      {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+            username: user,
+            password
+        })
+      }).then((response) => response.json()),
     getStatistic: () => fetch(`${URL}/dev/statistic`)
         .then((response) => response.json()),
     getCategories: () => fetch(`${URL}/dev/categories`)

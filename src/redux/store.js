@@ -1,17 +1,8 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import { routerReducer } from 'react-router-redux'
-import createSagaMiddleware from 'redux-saga'
-import { all } from 'redux-saga/effects';
+import createSagaMiddleware from 'redux-saga';
 
-import authReducer from './reducers/authReducer';
-import rootReducer from './reducers/rootReducer';
-import { appSaga } from './saga/appSaga'
-
-function* rootSaga() {
-  yield all([
-    appSaga()
-  ]);
-}
+import rootReducer from './reducers';
+import rootSaga from './saga';
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -19,17 +10,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
 : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware));
+const enhancers = composeEnhancers(applyMiddleware(sagaMiddleware));
 
 const initState = {};
 
 export const store = createStore(
-  combineReducers({
-    routing: routerReducer,
-    auth: authReducer,
-    root: rootReducer
-  }),
+  combineReducers(rootReducer),
   initState,
-  enhancer
+  enhancers
 );
 sagaMiddleware.run(rootSaga);
