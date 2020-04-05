@@ -1,10 +1,10 @@
-export const LOGIN = 'LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
 
 
 export function authorize(payload) {
   return {
-    type: LOGIN,
+    type: LOGIN_SUCCESS,
     payload
   };
 }
@@ -16,15 +16,15 @@ export function logOut(payload) {
 }
 
 const initState = {
-  isAuthenticated: true, //false!
+  isAuthenticated: false,
   user: '',
   token: ''
 };
 
 const authReducer = (state = initState, action) => {
   switch (action.type) {
-    case LOGIN:
-      return { ...state, isAuthenticated: true,  ...action.payload }
+    case LOGIN_SUCCESS:
+      return { ...state,  ...action.payload }
     case LOGOUT:
         return { isAuthenticated: false, user: '',  token: ''}
     default:

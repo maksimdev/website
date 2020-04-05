@@ -6,6 +6,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { connect } from 'react-redux';
+import { withCookies } from 'react-cookie';
 
 import SignIn from './../SignIn/SignIn';
 import SignUp from './../SignUp/SignUp';
@@ -18,11 +19,13 @@ function PublicPage() {
   return <h3>Public</h3>;
 }
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProps = (state, ownProps) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  cookies: ownProps.cookies
 });
 
-function Auth({ history, isAuthenticated }) {
+function Auth({ history, isAuthenticated, cookies }) {
+  console.log('cookies: ', cookies);
 
   function PrivateRoute({ children, ...rest }) {
     return (
@@ -92,4 +95,4 @@ function Auth({ history, isAuthenticated }) {
   );
 }
 
-export default connect(mapStateToProps)(Auth);
+export default withCookies(connect(mapStateToProps)(Auth));

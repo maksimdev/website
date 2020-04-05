@@ -19,23 +19,6 @@ export default function() {
   return (
     <div>
       <Stepper />
-      {/* {JSON.stringify(requisites)}
-      <QRScanner setData={setRequisites} />
-      <form className={classes.root} noValidate autoComplete="off">
-        <TextField
-          label="FN"
-          type="number"
-        />
-        <TextField
-          label="FD"
-          type="number"
-        />
-        <TextField
-          label="FDP"
-          type="number"
-        />
-      </form> */}
-
     </div>
   );
 };
