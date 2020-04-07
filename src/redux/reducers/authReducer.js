@@ -23,10 +23,11 @@ export function loginRequestFailed(payload) {
 }
 
 const initState = {
-  isAuthenticated: false,
-  user: '',
-  token: ''
+  isAuthenticated: true,
+  user: ''
 };
+
+const resetToken = () => localStorage.clear();
 
 const authReducer = (state = initState, action) => {
   switch (action.type) {
@@ -35,7 +36,8 @@ const authReducer = (state = initState, action) => {
     case LOGIN_REQUEST_FAILED:
       return { ...state,  ...action.payload }
     case LOGOUT:
-        return { isAuthenticated: false, user: '',  token: ''}
+        resetToken();
+        return { isAuthenticated: false, user: ''}
     default:
       return state
   }
