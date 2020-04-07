@@ -11,13 +11,10 @@ const customFetch = (isSecure, method, path, body) => fetch(
       body: JSON.stringify(body)
     }) : {}
   }).then((response) => response.json());
-
+  
 export const Api = {
     login: (user, password) => customFetch(true, 'POST', '/dev/login', { username: user, password }),
-    getReceipts: () => Promise.resolve([
-      {totalsum: 10000, shiftnumber: 20, datetime: '2020-03-20 14:23:00'},
-      {totalsum: 5000, shiftnumber: 8, datetime: '2020-01-10 15:41:00'}
-    ]), //mock
+    getReceiptsRequests: () => customFetch(true, 'GET', '/dev/receiptsrequests'), 
     getStatistic: () => customFetch(true, 'GET', '/dev/statistic'),
     getCategories: () => customFetch(true, 'GET', '/dev/categories'), 
     getPurchases: date => customFetch(true, 'GET', `/dev/purchases?date=${date}`),
