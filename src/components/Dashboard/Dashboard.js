@@ -7,17 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Chart from '../Chart/Chart';
 import Total from '../Total/Total';
 import Receipts from '../Receipts/Receipts';
-import { loadReceipts } from '../../redux/reducers/receiptsReducer';
-import { loadStatistic } from '../../redux/reducers/statisticReducer';
 
 const mapStateToProps = (state) => ({
   receipts: state.receipts,
   statistic: state.statistic
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  loadReceiptsList: () => dispatch(loadReceipts()),
-  loadStatisticData: () => dispatch(loadStatistic()),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -32,11 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Dashboard({ receipts, statistic, loadReceiptsList, loadStatisticData }) {
-  useEffect(() => {
-    loadReceiptsList();
-    loadStatisticData();
-  }, []);
+function Dashboard({ receipts, statistic }) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     return (
@@ -60,4 +49,4 @@ function Dashboard({ receipts, statistic, loadReceiptsList, loadStatisticData })
     );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

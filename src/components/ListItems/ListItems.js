@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 export const mainListItems = (
   <div>
-    <Link to="/dashboard">
+    <Link to="/dashboard" style={{ color: 'inherit', textDecoration: 'inherit'}}>
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
@@ -19,7 +19,7 @@ export const mainListItems = (
         <ListItemText primary="Dashboard" />
       </ListItem>
     </Link>
-    <Link to="/budget">
+    <Link to="/budget" style={{ color: 'inherit', textDecoration: 'inherit'}}>
       <ListItem button>
         <ListItemIcon>
           <MonetizationOnIcon />
@@ -27,7 +27,7 @@ export const mainListItems = (
         <ListItemText primary="Бюджет" />
       </ListItem>
     </Link>
-    <Link to="/bill">
+    <Link to="/bill" style={{ color: 'inherit', textDecoration: 'inherit'}}>
       <ListItem button>
         <ListItemIcon>
           <Receipt />

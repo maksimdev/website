@@ -5,7 +5,7 @@ import { store } from './redux/store';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 
-import Auth from './componentsnew/Auth/Auth';
+import Auth from './components/Auth/Auth';
 
 const history = syncHistoryWithStore(createBrowserHistory(), store);
 

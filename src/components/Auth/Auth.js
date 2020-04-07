@@ -11,7 +11,7 @@ import SignIn from './../SignIn/SignIn';
 import SignUp from './../SignUp/SignUp';
 import Main from '../Main/Main';
 import Dashboard from '../Dashboard/Dashboard';
-import Budget from '../../components/Budget/Budget';
+import Budget from '../../componentsOld/Budget/Budget';
 import BillsContainer from '../../containers/BillsContainer/BillsContainer';
 
 function PublicPage() {
@@ -23,7 +23,6 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 function Auth({ history, isAuthenticated, cookies }) {
-  console.log('cookies: ', cookies);
 
   function PrivateRoute({ children, ...rest }) {
     return (

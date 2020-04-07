@@ -7,7 +7,7 @@ function* loadData() {
     setTimeout(() => resolve(), 5000);
   })
   data = {
-    total: 10700,
+    total: 23100,
     currentMonth: [
       { date: '01/04', amount: 1000 },
       { date: '05/04', amount: 3000 },

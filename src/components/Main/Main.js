@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,9 +20,13 @@ import Notifications from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from '../ListItems/listItems';
 import { connect } from 'react-redux';
 import { logOut } from '../../redux/reducers/authReducer';
+import { loadReceipts } from '../../redux/reducers/receiptsReducer';
+import { loadStatistic } from '../../redux/reducers/statisticReducer';
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logOut())
+  logout: () => dispatch(logOut()),
+  loadReceiptsList: () => dispatch(loadReceipts()),
+  loadStatisticData: () => dispatch(loadStatistic()),
 });
 
 const mapStateToProps = state => ({
@@ -123,7 +127,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Main({ logout, user, children }) {
+function Main({ logout, user, children, loadReceiptsList, loadStatisticData }) {
+  useEffect(() => {
+    loadReceiptsList();
+    loadStatisticData();
+  }, []);
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
