@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Title from '../Title/Title';
 
-export default function Receipts({ data = [] }) {
+export default function Receipts({ data = [], isLoading }) {
 
   return (
     <React.Fragment>
@@ -35,7 +35,7 @@ export default function Receipts({ data = [] }) {
           ))}
         </TableBody>
       </Table>
-      {data.length ? <></> : <LinearProgress />}
+      {isLoading ? <LinearProgress /> : <></>}
     </React.Fragment>
   );
 }

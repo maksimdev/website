@@ -2,11 +2,11 @@ export const LOADING_STATISTIC = 'LOADING_STATISTIC';
 export const LOADING_STATISTIC_SUCCESS = 'LOADING_STATISTIC_SUCCESS';
 export const LOADING_STATISTIC_ERROR = 'LOADING_STATISTIC_ERROR';
 
-export const loadReceipts = () => ({
+export const loadStatistic = () => ({
   type: LOADING_STATISTIC
 });
 
-export const loadStatisticSuccess = (list) => ({
+export const loadStatisticSuccess = (statistic) => ({
   type: LOADING_STATISTIC_SUCCESS,
   payload: { statistic }
 });

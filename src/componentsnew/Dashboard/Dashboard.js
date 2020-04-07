@@ -1,22 +1,23 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Chart from '../Chart/Chart';
-import Deposits from '../Deposits/Deposits';
+import Total from '../Total/Total';
 import Receipts from '../Receipts/Receipts';
 import { loadReceipts } from '../../redux/reducers/receiptsReducer';
-
-import { Api } from '../../api/Api';
+import { loadStatistic } from '../../redux/reducers/statisticReducer';
 
 const mapStateToProps = (state) => ({
-  receipts: state.receipts.list,
+  receipts: state.receipts,
+  statistic: state.statistic
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadReceiptsList: () => dispatch(loadReceipts()),
+  loadStatisticData: () => dispatch(loadStatistic()),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -31,28 +32,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Dashboard({ receipts, loadReceiptsList }) {
+function Dashboard({ receipts, statistic, loadReceiptsList, loadStatisticData }) {
   useEffect(() => {
     loadReceiptsList();
+    loadStatisticData();
   }, []);
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
     return (
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={9}>
           <Paper className={fixedHeightPaper}>
-            <Chart />
+            <Chart data={statistic.statistic.currentMonth} isLoading={statistic.isLoading} />
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={3}>
           <Paper className={fixedHeightPaper}>
-            <Deposits />
+            <Total total={statistic.statistic.total} isLoading={statistic.isLoading} />
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <Receipts data={receipts}/>
+            <Receipts data={receipts.list} isLoading={receipts.isLoading} />
           </Paper>
         </Grid>
       </Grid>
