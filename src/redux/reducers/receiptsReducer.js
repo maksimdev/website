@@ -29,7 +29,7 @@ const receiptsReducer = (state = initState, action) => {
     case LOADING_RECEIPTS_SUCCESS:
       return { ...state, isLoading: false,  list: action.payload.list }
     case LOADING_RECEIPTS_ERROR:
-      return { list: [], isLoading: false,  ...action.payload }
+      return { list: [], isLoading: false,  error: action.payload.error }
     default:
       return state
   }
