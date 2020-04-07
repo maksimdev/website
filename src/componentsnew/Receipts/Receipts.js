@@ -6,6 +6,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Cached from '@material-ui/icons/Cached';
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import Receipt from '@material-ui/icons/Receipt';
 import Title from '../Title/Title';
 
 export default function Receipts({ data = [], isLoading }) {
@@ -29,8 +32,8 @@ export default function Receipts({ data = [], isLoading }) {
               <TableCell>{row.totalsum}</TableCell>
               <TableCell>{row.shiftnumber}</TableCell>
               <TableCell>{row.datetime}</TableCell>
-              <TableCell>{row.status}</TableCell>
-              <TableCell align="right">открыть</TableCell>
+              <TableCell>{row.status === 'pending' ? <Cached /> : <CheckCircle />}</TableCell>
+              <TableCell align="right">{row.status === 'pending' ? <></> : <Receipt />}</TableCell>
             </TableRow>
           ))}
         </TableBody>

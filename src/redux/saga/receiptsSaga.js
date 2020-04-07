@@ -9,7 +9,10 @@ function* loadData() {
   data = [
     {id: 1, totalsum: 10000, shiftnumber: 20, datetime: '2020-03-21 15:23:00', status: 'pending'},
     {id: 2, totalsum: 2000, shiftnumber: 10, datetime: '2020-02-21 11:53:00', status: 'ready'},
-    {id: 3, totalsum: 3000, shiftnumber: 25, datetime: '2020-01-20 13:03:00', status: 'ready'}
+    {id: 3, totalsum: 3000, shiftnumber: 25, datetime: '2020-01-20 13:03:00', status: 'ready'},
+    {id: 4, totalsum: 3400, shiftnumber: 30, datetime: '2020-02-21 11:53:00', status: 'pending'},
+    {id: 5, totalsum: 2800, shiftnumber: 11, datetime: '2020-04-21 11:53:00', status: 'pending'},
+    {id: 6, totalsum: 1900, shiftnumber: 8, datetime: '2020-06-21 11:53:00', status: 'ready'},
   ];
   yield put(loadReceiptsSuccess(data));
 
