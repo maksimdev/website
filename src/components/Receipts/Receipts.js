@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
+import { Link } from "react-router-dom";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,7 +12,6 @@ import Receipt from '@material-ui/icons/Receipt';
 import Title from '../Title/Title';
 
 export default function Receipts({ data = [], isLoading }) {
-
   return (
     <React.Fragment>
       <Title>Мои чеки</Title>
@@ -20,7 +19,6 @@ export default function Receipts({ data = [], isLoading }) {
         <TableHead>
           <TableRow>
             <TableCell>Сумма</TableCell>
-            <TableCell>Кол-во товаров</TableCell>
             <TableCell>Дата покупки</TableCell>
             <TableCell>Статус</TableCell>
             <TableCell align="right"></TableCell>
@@ -30,10 +28,9 @@ export default function Receipts({ data = [], isLoading }) {
           {data.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.totalsum}</TableCell>
-              <TableCell>{row.shiftnumber}</TableCell>
               <TableCell>{row.datetime}</TableCell>
-              <TableCell>{row.status === 'pending' ? <Cached /> : <CheckCircle />}</TableCell>
-              <TableCell align="right">{row.status === 'pending' ? <></> : <Receipt />}</TableCell>
+              <TableCell>{row.status === 'PENDING' ? <Cached /> : <CheckCircle />}</TableCell>
+              <TableCell align="right">{row.status === 'pending' ? <></> : <Link to={`/receipts/${row.id}`}><Receipt /></Link>}</TableCell>
             </TableRow>
           ))}
         </TableBody>

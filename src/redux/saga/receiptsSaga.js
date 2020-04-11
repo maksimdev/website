@@ -4,7 +4,7 @@ import { loadReceiptsError, loadReceiptsSuccess, LOADING_RECEIPTS } from '../red
 
 function* loadData() {
   try {
-    const data = yield call(Api.getReceiptsRequests);
+    const data = yield call(Api.getReceipts);
     yield put(loadReceiptsSuccess(data));
   } catch (err) {
     yield put(loadReceiptsError({ isAuthenticated: false, user: '', error: 'Error: smth went wrong' }));

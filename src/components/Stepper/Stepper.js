@@ -159,6 +159,9 @@ export default function CustomStepper() {
     }
   }
 
+  console.log('bill: ', bill);
+  console.log('requisites: ', requisites);
+  
   return (
     <div className={classes.root}>
       <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>

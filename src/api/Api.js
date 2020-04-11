@@ -1,4 +1,4 @@
-const URL = 'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';
+const URL = 'http://localhost:3000';//'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';
 
 const customFetch = (isSecure, method, path, body) => fetch(
   `${URL}${path}`, {
@@ -14,7 +14,11 @@ const customFetch = (isSecure, method, path, body) => fetch(
   
 export const Api = {
     login: (user, password) => customFetch(true, 'POST', '/dev/login', { username: user, password }),
-    getReceiptsRequests: () => customFetch(true, 'GET', '/dev/receiptsrequests'), 
+    getReceipts: () => customFetch(true, 'GET', '/dev/receipts'),
+    createReceipt: receipt => customFetch(true, 'POST', '/dev/receipt', receipt),
+    loadReceipt: id => customFetch(true, 'GET', `/dev/receipts/${id}`),
+
+    //old
     getStatistic: () => customFetch(true, 'GET', '/dev/statistic'),
     getCategories: () => customFetch(true, 'GET', '/dev/categories'), 
     getPurchases: date => customFetch(true, 'GET', `/dev/purchases?date=${date}`),

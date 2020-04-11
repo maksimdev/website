@@ -12,7 +12,8 @@ import SignUp from './../SignUp/SignUp';
 import Main from '../Main/Main';
 import Dashboard from '../Dashboard/Dashboard';
 import Budget from '../../componentsOld/Budget/Budget';
-import BillsContainer from '../../containers/BillsContainer/BillsContainer';
+import Receipt from '../Receipt/Receipt';
+import Stepper from '../Stepper/Stepper';
 
 function PublicPage() {
   return <h3>Public</h3>;
@@ -85,8 +86,14 @@ function Auth({ history, isAuthenticated, cookies }) {
           <Budget />
         </PrivateRoute>
         <PrivateRoute path="/bill">
-          <BillsContainer />
+          <Stepper />
         </PrivateRoute>
+        <PrivateRoute path="/receipts/:id">
+          <Receipt />
+        </PrivateRoute>
+        <LoginRoute path="/">
+          <SignIn />
+        </LoginRoute>
       </Switch>
     </Router>
   );
