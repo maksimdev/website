@@ -2,7 +2,10 @@ import React from 'react';
 import MaterialTable from 'material-table';
 import { Api } from '../../api/Api';
 import MaterialUIPickers from '../DatePicker/DatePicker';
-import { Chart } from '../Chart/Chart'
+import { Chart } from '../Chart/Chart';
+import LineChart from '../LineChart/LineChart';
+import moment from 'moment';
+import DateSwitcher from '../DateSwitcher/DateSwitcher';
 
 export const convertArrCategoriesToObj = categories => categories.reduce(
   (acc, currentValue) => ({ ...acc, [currentValue.id]: currentValue.title }), {});
@@ -54,7 +57,7 @@ const localization = {
   },
 };
 
-const style = { width: '50%' };
+const style = { width: '100%' };
 
 export default class Budget extends React.Component {
   constructor(props) {
@@ -74,59 +77,99 @@ export default class Budget extends React.Component {
           },
         ],
       data: [],
-      categories: []
+      categories: [],
+      statistic: [],
+      currentDate: moment().format('YYYY-MM-DD'),
+      isLoading: false
     }
   };
 
   componentDidMount() {
     Promise.all([
-      Api.getPurchases(),
-      Api.getCategories()
-    ]).then(([purchases, categories]) => {
+      Api.getPurchases(moment().format('YYYY-MM')),
+      Api.getCategories(),
+      Api.getStatistic()
+    ]).then(([purchases, categories, statistic]) => {
       this.setState(prevState => ({
         columns: addCategoriesToColumns(categories, prevState.columns),
         data: purchases,
-        categories
+        categories,
+        statistic
       }))
     });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    prevState.currentDate !== this.state.currentDate
+    ? Api.getPurchases(moment(this.state.currentDate).format('YYYY-MM'))
+        .then((purchases) => {
+          this.setState(prevState => ({ isLoading: false, data: purchases }));
+        }) : null
+  }
+
+  onChangeMonthBack = () => this.setState((prevState) => ({
+    isLoading: true,
+    currentDate: moment(prevState.currentDate).subtract(1, 'month').format('YYYY-MM-DD')
+  }));
+
+  onChangeMonthForward = () => this.setState((prevState) => ({
+    isLoading: true,
+    currentDate: moment(prevState.currentDate).add(1, 'month').format('YYYY-MM-DD')
+  }));
+
   onCreatePurchase = ({ category_id, cost, date = new Date() }) => {
     const newPurchase = { category_id, cost, date };
     return isValidPurchase(newPurchase) ? Api.createPurchase(newPurchase)
+      .then((receivedData) => Promise.all([Promise.resolve(receivedData), Api.getStatistic()]))
       .then(
-        receivedData => this.setState(
-          prevState => ({ ...prevState, data: [...prevState.data, receivedData] })
-        )) : Promise.resolve().then(() => console.log('Error: Please select values')); //should be changed to validation for fields
+        ([receivedData, statistic]) => this.setState(
+          prevState => ({ ...prevState, data: [...prevState.data, receivedData], statistic })
+        )) : Promise.resolve().then(() => console.log('Error: Please select values'));
   };
 
   onUpdatePurchase = (newData, oldData) => 
-    Api.updatePurchase(newData).then((receivedData) => {
-      this.setState(prevState => {
-        const data = [...prevState.data];
-        data[data.indexOf(oldData)] = receivedData;
-        return { ...prevState, data };
+    Api.updatePurchase(newData)
+      .then((receivedData) => Promise.all([Promise.resolve(receivedData), Api.getStatistic()]))
+      .then(([receivedData, statistic]) => {
+        this.setState(prevState => {
+          const data = [...prevState.data];
+          data[data.indexOf(oldData)] = receivedData;
+          return { ...prevState, data, statistic };
+        });
       });
-    });
 
   onRemovePurchase = oldData => 
     Api.removePurchase(oldData.id)
-      .then(receivedData => 
+      .then((receivedData) => Promise.all([Promise.resolve(receivedData), Api.getStatistic()]))
+      .then(([receivedData, statistic]) => 
         this.setState(
           prevState => ({
             ...prevState,
-            data: prevState.data.filter(item => item.id !== receivedData.id) })
+            data: prevState.data.filter(item => item.id !== receivedData.id),
+            statistic
+          })
         )
       );
 
   render() {
-    const { columns, data, categories } = this.state;
+    const { columns, data, categories, isLoading, statistic } = this.state;
     return(
       <>
-        <Chart 
+        <DateSwitcher
+          onChangeMonthBack={() => isLoading ? null : this.onChangeMonthBack()}
+          onChangeMonthForward={() => isLoading ? null : this.onChangeMonthForward()}
+          isLoading={isLoading}
+        >
+          {moment(this.state.currentDate).format('YYYY-MM')}
+        </DateSwitcher>
+        <br />
+        <Chart
           data={data}
           categories={categories}
         />
+        <br />
+        <LineChart data={ statistic }/>
+        <br />
         <MaterialTable
           style={ style }
           title={ title }

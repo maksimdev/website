@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MiniDrawer from '../MiniDrawer/MiniDrawer';
+import Main from '../Main/Main';
 
 export default class App extends Component {
   constructor(props) {
@@ -7,10 +7,6 @@ export default class App extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <MiniDrawer />
-      </div>
-    );
+    return (<Main />);
   }
 }

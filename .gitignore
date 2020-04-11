@@ -6,3 +6,4 @@ env.js
 node_modules
 .vscode
 coverage
+.DS_Store
