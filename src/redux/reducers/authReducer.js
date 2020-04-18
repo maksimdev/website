@@ -23,7 +23,7 @@ export function loginRequestFailed(payload) {
 }
 
 const initState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   user: ''
 };
 

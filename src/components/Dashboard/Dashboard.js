@@ -8,17 +8,18 @@ import Chart from '../Chart/Chart';
 import Total from '../Total/Total';
 import Receipts from '../Receipts/Receipts';
 import { loadReceipts } from '../../redux/reducers/receiptsReducer';
+import { setDate } from '../../redux/reducers/statisticReducer';
 import { convertValueToMoneyFormat } from '../../utils/utils';
 import moment from 'moment';
 import LineChart from '../LineChart/LineChart';
 import DoughnutChart from '../DoughnutChart/DoughnutChart';
 
 const mapStateToProps = (state) => ({
-  receipts: state.receipts
+  statistic: state.statistic
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadReceiptsList: () => dispatch(loadReceipts()),
+  setDate: () => dispatch(setDate()),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -38,14 +39,9 @@ const prepareDataToChart = data => {
   return data.map(item => ({ ...item, datetime: convertToDate(item.datetime), totalsum: convertValueToMoneyFormat(item.totalsum) })).reverse();
 };
 
-const startOfMonth = moment().startOf('month').valueOf()
-const endOfMonth   = moment().endOf('month').valueOf()
-const getTotalSum = data => data.reduce((acc, item) => acc += item.totalsum, 0);
-const getSumByCurrentMonth = data => getTotalSum(data.filter(item => moment(item.datetime).valueOf() >= startOfMonth && moment(item.datetime).valueOf() <= endOfMonth));
-
-function Dashboard({ receipts: { list, isLoading }, loadReceiptsList }) {
+function Dashboard({ loadReceiptsList, statistic, setDate }) {
   useEffect(() => {
-    loadReceiptsList();
+    setDate(new Date());
   }, []);
 
   const classes = useStyles();
@@ -60,15 +56,15 @@ function Dashboard({ receipts: { list, isLoading }, loadReceiptsList }) {
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <Receipts data={list} isLoading={isLoading} />
+            <Receipts data={statistic.data.statistic} isLoading={statistic.isLoading} />
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <LineChart data={prepareDataToChart(list)} />
+            <LineChart data={prepareDataToChart(statistic.data.statistic)} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={8} lg={9}>
+        {/* <Grid item xs={12} md={8} lg={9}>
           <Paper className={fixedHeightPaper}>
             <Chart data={prepareDataToChart(list)} isLoading={isLoading} />
           </Paper>
@@ -77,7 +73,7 @@ function Dashboard({ receipts: { list, isLoading }, loadReceiptsList }) {
           <Paper className={fixedHeightPaper}>
             <Total total={getTotalSum(list)} byMonth={getSumByCurrentMonth(list)} isLoading={isLoading} />
           </Paper>
-        </Grid>
+        </Grid> */}
       </Grid>
     );
 }

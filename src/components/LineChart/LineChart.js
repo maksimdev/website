@@ -1,4 +1,6 @@
 import React from 'react';
+import Title from '../Title/Title';
+import Grid from '@material-ui/core/Grid';
 import { Line } from 'react-chartjs-2';
 
 function chartData(data) {
@@ -26,15 +28,17 @@ export default class LineChart extends React.Component {
   }
 
   render() {
-    console.log('props: ', this.props);
     return (
       <div>
+        <Grid container justify="flex-start">
+          <Title>Расходы по месяцам</Title>
+        </Grid>
         <Line
           height={500}
           options={{
             maintainAspectRatio: false,
             title: {
-              display: true,
+              display: false,
               text: 'Ежемесечные рассходы'
             },
             legend: {

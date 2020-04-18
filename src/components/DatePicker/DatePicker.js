@@ -3,7 +3,7 @@ import React from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  KeyboardDatePicker
 } from '@material-ui/pickers';
 
 export default function MaterialUIPickers(props) {
@@ -12,7 +12,8 @@ export default function MaterialUIPickers(props) {
       <KeyboardDatePicker
         disableToolbar
         autoOk={true}
-        format="yyyy/MM/dd"
+        format="yyyy/MM"
+        views={["year", "month"]}
         id="date-picker-inline"
         value={props.value}
         onChange={props.onChange}

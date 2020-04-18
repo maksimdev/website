@@ -1,3 +1,11 @@
 .chartWrapper {
     position: relative;
 }
+
+.chartTitle {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-top: 225px !important;
+    z-index: 1;
+}

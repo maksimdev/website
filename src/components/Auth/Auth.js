@@ -11,7 +11,6 @@ import SignIn from './../SignIn/SignIn';
 import SignUp from './../SignUp/SignUp';
 import Main from '../Main/Main';
 import Dashboard from '../Dashboard/Dashboard';
-import Budget from '../../componentsOld/Budget/Budget';
 import Receipt from '../Receipt/Receipt';
 import Stepper from '../Stepper/Stepper';
 
@@ -79,9 +78,6 @@ function Auth({ history, isAuthenticated }) {
         </LoginRoute>
         <PrivateRoute path="/dashboard">
           <Dashboard />
-        </PrivateRoute>
-        <PrivateRoute path="/budget">
-          <Budget />
         </PrivateRoute>
         <PrivateRoute path="/bill">
           <Stepper />
