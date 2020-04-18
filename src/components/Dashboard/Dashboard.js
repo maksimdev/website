@@ -10,6 +10,8 @@ import Receipts from '../Receipts/Receipts';
 import { loadReceipts } from '../../redux/reducers/receiptsReducer';
 import { convertValueToMoneyFormat } from '../../utils/utils';
 import moment from 'moment';
+import LineChart from '../LineChart/LineChart';
+import DoughnutChart from '../DoughnutChart/DoughnutChart';
 
 const mapStateToProps = (state) => ({
   receipts: state.receipts
@@ -51,6 +53,21 @@ function Dashboard({ receipts: { list, isLoading }, loadReceiptsList }) {
 
     return (
       <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <DoughnutChart />
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <Receipts data={list} isLoading={isLoading} />
+          </Paper>
+        </Grid>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <LineChart data={prepareDataToChart(list)} />
+          </Paper>
+        </Grid>
         <Grid item xs={12} md={8} lg={9}>
           <Paper className={fixedHeightPaper}>
             <Chart data={prepareDataToChart(list)} isLoading={isLoading} />
@@ -59,11 +76,6 @@ function Dashboard({ receipts: { list, isLoading }, loadReceiptsList }) {
         <Grid item xs={12} md={4} lg={3}>
           <Paper className={fixedHeightPaper}>
             <Total total={getTotalSum(list)} byMonth={getSumByCurrentMonth(list)} isLoading={isLoading} />
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Receipts data={list} isLoading={isLoading} />
           </Paper>
         </Grid>
       </Grid>
