@@ -106,7 +106,6 @@ export default function({ receiptId }) {
       </Card>
     );
   }
-  console.log('bill: ', bill);
 
   return (
     <Grid item align="center" xs={12}>

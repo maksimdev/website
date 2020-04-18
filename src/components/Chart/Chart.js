@@ -8,7 +8,7 @@ export default function Chart({ data, isLoading }) {
   const theme = useTheme();
   return (
     <React.Fragment>
-      <Title>Расходы за текущий месяц {isLoading ? <LinearProgress /> : <></>} </Title>
+      <Title>Рассходы {isLoading ? <LinearProgress /> : <></>} </Title>
       <ResponsiveContainer>
         <LineChart
           data={data}
@@ -19,7 +19,7 @@ export default function Chart({ data, isLoading }) {
             left: 24,
           }}
         >
-          <XAxis dataKey="date" stroke={theme.palette.text.secondary} />
+          <XAxis dataKey="datetime" stroke={theme.palette.text.secondary} />
           <YAxis stroke={theme.palette.text.secondary}>
             <Label
               angle={270}
@@ -29,7 +29,7 @@ export default function Chart({ data, isLoading }) {
               Руб.
             </Label>
           </YAxis>
-          <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />
+          <Line type="monotone" dataKey="totalsum" stroke={theme.palette.primary.main} dot={false} />
         </LineChart>
       </ResponsiveContainer>
     </React.Fragment>

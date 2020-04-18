@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,20 +17,20 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Notifications from '@material-ui/icons/Notifications';
+import Cached from '@material-ui/icons/Cached';
 import { mainListItems, secondaryListItems } from '../ListItems/listItems';
 import { connect } from 'react-redux';
 import { logOut } from '../../redux/reducers/authReducer';
-import { loadReceipts } from '../../redux/reducers/receiptsReducer';
-import { loadStatistic } from '../../redux/reducers/statisticReducer';
+
+const getAmountInPendingStatus = data => data.filter(item => (item.status === "PENDING")).reduce((acc, item) => (acc += 1), 0);
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logOut()),
-  loadReceiptsList: () => dispatch(loadReceipts()),
-  loadStatisticData: () => dispatch(loadStatistic()),
+  logout: () => dispatch(logOut())
 });
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.auth.user,
+  amountInPendingStatus: getAmountInPendingStatus(state.receipts.list)
 });
 
 function Copyright() {
@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24,
   },
   toolbarIcon: {
     display: 'flex',
@@ -124,23 +124,18 @@ const useStyles = makeStyles((theme) => ({
   },
   fixedHeight: {
     height: 240,
-  },
+  }
 }));
 
-function Main({ logout, user, children, loadReceiptsList, loadStatisticData }) {
-  useEffect(() => {
-    loadReceiptsList();
-    loadStatisticData();
-  }, []);
-  const classes = useStyles();
+function Main({ logout, user, children, amountInPendingStatus }) {
   const [open, setOpen] = React.useState(true);
+  const classes = useStyles();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <div className={classes.root}>
@@ -157,17 +152,19 @@ function Main({ logout, user, children, loadReceiptsList, loadStatisticData }) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            Менеджер рассходов
           </Typography>
           <Typography component="h3" variant="h6" color="inherit" noWrap>
             {user}
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <Notifications />
+          {
+            amountInPendingStatus ? (<IconButton color="inherit">
+            <Badge badgeContent={amountInPendingStatus} color="secondary">
+              <Cached />
             </Badge>
-          </IconButton>
-          <IconButton color="inherit" onClick={() => logout()}>
+          </IconButton>) : ''
+          }
+          <IconButton color="inherit" onClick={logout}>
             <Badge color="secondary">
               <ExitToApp />
             </Badge>
@@ -189,7 +186,7 @@ function Main({ logout, user, children, loadReceiptsList, loadStatisticData }) {
         <Divider />
         <List>{mainListItems}</List>
         <Divider />
-        <List>{secondaryListItems}</List>
+        {/* <List>{secondaryListItems}</List> */}
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -205,25 +202,3 @@ function Main({ logout, user, children, loadReceiptsList, loadStatisticData }) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
-
-
-
-/*
-<Grid container spacing={3}>
-  <Grid item xs={12} md={8} lg={9}>
-    <Paper className={fixedHeightPaper}>
-      <Chart />
-    </Paper>
-  </Grid>
-  <Grid item xs={12} md={4} lg={3}>
-    <Paper className={fixedHeightPaper}>
-      <Deposits />
-    </Paper>
-  </Grid>
-  <Grid item xs={12}>
-    <Paper className={classes.paper}>
-      <Orders />
-    </Paper>
-  </Grid>
-</Grid>
-*/

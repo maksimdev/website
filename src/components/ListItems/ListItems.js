@@ -16,14 +16,6 @@ export const mainListItems = (
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItem>
-    </Link>
-    <Link to="/budget" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-      <ListItem button>
-        <ListItemIcon>
-          <MonetizationOnIcon />
-        </ListItemIcon>
         <ListItemText primary="Бюджет" />
       </ListItem>
     </Link>
@@ -33,6 +25,14 @@ export const mainListItems = (
           <Receipt />
         </ListItemIcon>
         <ListItemText primary="Добавить чек" />
+      </ListItem>
+    </Link>
+    <Link to="/budget" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+      <ListItem button>
+        <ListItemIcon>
+          <MonetizationOnIcon />
+        </ListItemIcon>
+        <ListItemText primary="Бюджет старое" />
       </ListItem>
     </Link>
   </div>

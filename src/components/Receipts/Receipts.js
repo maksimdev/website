@@ -31,7 +31,13 @@ export default function Receipts({ data = [], isLoading }) {
               <TableCell>{convertValueToMoneyFormat(row.totalsum)}</TableCell>
               <TableCell>{convertDate(row.datetime)}</TableCell>
               <TableCell>{row.status === 'PENDING' ? <Cached /> : <CheckCircle />}</TableCell>
-              <TableCell align="right">{row.status === 'PENDING' ? <></> : <Link to={`/receipts/${row.id}`}><Receipt /></Link>}</TableCell>
+              <TableCell align="right">
+                {
+                  row.status === 'PENDING'
+                  ? <></>
+                  : <Link to={`/receipts/${row.id}`}><Receipt /></Link>
+                }
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

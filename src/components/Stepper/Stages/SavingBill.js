@@ -14,7 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import moment from 'moment';
 
 import { Api } from '../../../api/Api';
-import { convertValueToMoneyFormat } from '../../utils/utils';
+import { convertValueToMoneyFormat } from '../../../utils/utils';
 
 const useStyles = makeStyles({
   root: {

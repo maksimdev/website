@@ -11,14 +11,6 @@ export function authorize(payload) {
 }
 
 function* getToken({ payload: { user, password } }) {
-  // console.log('MOCK waiting request from API');
-  // const data = yield new Promise((resolve) => {
-  //   setTimeout(() => resolve(), 3000);
-  // })
-  // yield put(loginRequestSuccess({ isAuthenticated: true, user: 'm.ashmetev@ya.ru', token: 'secretkeyhere123456789123456789' }));
-
-
-  //API works fine!
   try {
     const data = yield call(Api.login, user, password);
     if (data.token) {

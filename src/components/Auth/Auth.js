@@ -15,15 +15,13 @@ import Budget from '../../componentsOld/Budget/Budget';
 import Receipt from '../Receipt/Receipt';
 import Stepper from '../Stepper/Stepper';
 
-function PublicPage() {
-  return <h3>Public</h3>;
-}
+const PublicPage = () => <h3>Public</h3>;
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-function Auth({ history, isAuthenticated, cookies }) {
+function Auth({ history, isAuthenticated }) {
 
   function PrivateRoute({ children, ...rest }) {
     return (
