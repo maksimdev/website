@@ -6,11 +6,13 @@ import DatePicker from '../DatePicker/DatePicker';
 import Title from '../Title/Title';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { convertValueToMoneyFormat } from '../../utils/utils';
 import './style.css';
 
 const mapStateToProps = (state) => ({
-  statistic: state.statistic.data
+  statistic: state.statistic.data,
+  datePickerIsLoading: state.statistic.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -30,14 +32,15 @@ const prepareData = () => {
 
 const getTotalSum = data => data.reduce((acc, item) => acc += item.totalsum, 0);
 
-function DoughnutChart({ statistic: { date, statistic }, handleDateChange }) {
+function DoughnutChart({ statistic: { date, statistic }, handleDateChange, datePickerIsLoading }) {
   const chartReference = React.createRef();
 
   return (
     <>
+      {datePickerIsLoading ? <LinearProgress /> : <></>}
       <Grid container justify="space-between">
         <Title>Расходы</Title>
-        <DatePicker value={date} onChange={handleDateChange}/>
+        <DatePicker value={date} onChange={handleDateChange} disabled={datePickerIsLoading}/>
       </Grid>
       <div className="chartWrapper">
         <span className="chartTitle">

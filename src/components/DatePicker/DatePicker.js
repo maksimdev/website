@@ -10,6 +10,7 @@ export default function MaterialUIPickers(props) {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <KeyboardDatePicker
+        disabled={props.disabled}
         disableToolbar
         autoOk={true}
         format="yyyy/MM"
