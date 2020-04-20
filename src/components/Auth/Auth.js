@@ -14,6 +14,8 @@ import Dashboard from '../Dashboard/Dashboard';
 import Budget from '../../componentsOld/Budget/Budget';
 import Receipt from '../Receipt/Receipt';
 import Stepper from '../Stepper/Stepper';
+import ConnectedShopingList from '../ShoppingList/ShopingList'
+import ShoppingCart from '../ShoppingCart/ShoppingCart'
 
 function PublicPage() {
   return <h3>Public</h3>;
@@ -90,6 +92,12 @@ function Auth({ history, isAuthenticated, cookies }) {
         </PrivateRoute>
         <PrivateRoute path="/receipts/:id">
           <Receipt />
+        </PrivateRoute>
+        <PrivateRoute path="/shoppingList/:id">
+          <ShoppingCart />
+        </PrivateRoute>
+        <PrivateRoute path="/shoppingList">
+          <ConnectedShopingList />
         </PrivateRoute>
         <LoginRoute path="/">
           <SignIn />

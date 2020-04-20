@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { Api } from '../../api/Api';
-import { loadStatistic, loadStatisticError, loadStatisticSuccess, LOADING_STATISTIC } from '../reducers/statisticReducer';
+import { loadStatistic, loadStatisticError, loadStatisticSuccess } from '../reducers/statisticReducer';
+import { ACTIONS } from '../../constants/constants';
 
 function* loadData() {
   let data = yield new Promise((resolve) => {
@@ -34,5 +35,5 @@ function* loadData() {
 }
 
 export function* statisticSaga() {
-  yield takeLatest(LOADING_STATISTIC, loadData);
+  yield takeLatest(ACTIONS.LOADING_STATISTIC, loadData);
 }

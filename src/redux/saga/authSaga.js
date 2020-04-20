@@ -1,11 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { Api } from '../../api/Api';
 import { loginRequestSuccess, loginRequestFailed } from '../reducers/authReducer';
+import { ACTIONS } from '../../constants/constants';
 
 export const LOGIN = 'LOGIN';
 export function authorize(payload) {
   return {
-    type: LOGIN,
+    type: ACTIONS.LOGIN,
     payload
   };
 }
@@ -33,5 +34,5 @@ function* getToken({ payload: { user, password } }) {
 }
 
 export function* authSaga() {
-  yield takeLatest('LOGIN', getToken);
+  yield takeLatest(ACTIONS.LOGIN, getToken);
 }
