@@ -167,7 +167,7 @@ const document = {
   }
 };
 
-export default function({ receiptId }) {
+export default function() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [bill, setBill] = useState(null);
