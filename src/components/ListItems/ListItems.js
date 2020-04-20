@@ -6,6 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import BarChart from '@material-ui/icons/BarChart';
 import Receipt from '@material-ui/icons/Receipt';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -24,6 +25,14 @@ export const mainListItems = (
           <Receipt />
         </ListItemIcon>
         <ListItemText primary="Добавить чек" />
+      </ListItem>
+    </Link>
+    <Link to="/shoppingList" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+      <ListItem button>
+        <ListItemIcon>
+          <ShoppingBasketIcon />
+        </ListItemIcon>
+        <ListItemText primary="Список покупок" />
       </ListItem>
     </Link>
   </div>

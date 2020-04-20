@@ -1,15 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { Api } from '../../api/Api';
-import { convertValueToMoneyFormat } from '../../utils/utils'; 
-import moment from 'moment';
-import {
-  loadStatisticSuccess,
-  loadStatisticError,
-  setStatisticSuccess,
-  setStatisticError,
-  LOADING_STATISTIC,
-  SET_DATE
-} from '../reducers/statisticReducer';
+import { loadStatistic, loadStatisticError, loadStatisticSuccess } from '../reducers/statisticReducer';
+import { ACTIONS } from '../../constants/constants';
 
 function* loadData() {
   const getTotal = data => data.reduce((acc, { sum }) => acc += +sum, 0);
@@ -39,6 +31,6 @@ function* setData({ payload: { date }}) {
 }
 
 export function* statisticSaga() {
-  yield takeLatest(LOADING_STATISTIC, loadData);
-  yield takeLatest(SET_DATE, setData);
+  yield takeLatest(ACTIONS.LOADING_STATISTIC, loadData);
+  yield takeLatest(ACTIONS.SET_DATE, setData);
 }

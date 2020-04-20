@@ -13,6 +13,8 @@ import Main from '../Main/Main';
 import Dashboard from '../Dashboard/Dashboard';
 import Receipt from '../Receipt/Receipt';
 import Stepper from '../Stepper/Stepper';
+import ConnectedShopingList from '../ShoppingList/ShopingList'
+import ShoppingCart from '../ShoppingCart/ShoppingCart'
 
 const PublicPage = () => <h3>Public</h3>;
 
@@ -84,6 +86,12 @@ function Auth({ history, isAuthenticated }) {
         </PrivateRoute>
         <PrivateRoute path="/receipts/:id">
           <Receipt />
+        </PrivateRoute>
+        <PrivateRoute path="/shoppingList/:id">
+          <ShoppingCart />
+        </PrivateRoute>
+        <PrivateRoute path="/shoppingList">
+          <ConnectedShopingList />
         </PrivateRoute>
         <LoginRoute path="/">
           <SignIn />
