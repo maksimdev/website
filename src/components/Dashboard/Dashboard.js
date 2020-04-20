@@ -14,7 +14,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setDate: () => dispatch(setDate()),
+  setDate: date => dispatch(setDate(date)),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ const prepareDataToChart = data => {
 
 function Dashboard({ statistic, setDate }) {
   useEffect(() => {
-    setDate(new Date());
+    setDate(statistic.data.date);
   }, []);
 
   const classes = useStyles();

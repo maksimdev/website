@@ -19,16 +19,6 @@ export const setDate = (date) => ({
   payload: { date }
 });
 
-export const setStatisticSuccess = (data) => ({
-  type: ACTIONS.SET_STATISTIC_SUCCESS,
-  payload: data
-});
-
-export const setStatisticError = (error) => ({
-  type: ACTIONS.SET_STATISTIC_ERROR,
-  payload: { error }
-});
-
 const initState = {
   data: {
     date: new Date(),
@@ -41,10 +31,12 @@ const initState = {
 
 const statisticReducer = (state = initState, action) => {
   switch (action.type) {
+    case ACTIONS.SET_DATE:
+      return { ...state, isLoading: true, error: '', data: { ...state.data, ...action.payload } }
     case ACTIONS.LOADING_STATISTIC:
       return { ...state, isLoading: true, error: '' }
     case ACTIONS.LOADING_STATISTIC_SUCCESS:
-      return { ...state, isLoading: false,  statistic: action.payload.statistic }
+      return { ...state, isLoading: false,  data: { ...state.data, ...action.payload.statistic } }
     case ACTIONS.LOADING_STATISTIC_ERROR:
       return { statistic: {}, isLoading: false,  error: action.payload.error }
     default:
