@@ -32,7 +32,7 @@ const prepareData = () => {
 
 const getTotalSum = data => data.reduce((acc, item) => acc += item.totalsum, 0);
 
-function DoughnutChart({ statistic: { date, statistic }, handleDateChange, datePickerIsLoading }) {
+function DoughnutChart({ statistic: { date, billRequests }, handleDateChange, datePickerIsLoading }) {
   const chartReference = React.createRef();
 
   return (
@@ -45,7 +45,7 @@ function DoughnutChart({ statistic: { date, statistic }, handleDateChange, dateP
       <div className="chartWrapper">
         <span className="chartTitle">
           <Typography component="p" variant="h6">
-            {convertValueToMoneyFormat(getTotalSum(statistic))} руб
+            {convertValueToMoneyFormat(getTotalSum(billRequests))} руб
           </Typography>
         </span>
         <Doughnut
