@@ -1,34 +1,43 @@
-export const LOADING_STATISTIC = 'LOADING_STATISTIC';
-export const LOADING_STATISTIC_SUCCESS = 'LOADING_STATISTIC_SUCCESS';
-export const LOADING_STATISTIC_ERROR = 'LOADING_STATISTIC_ERROR';
+import { ACTIONS } from '../../constants/constants';
 
 export const loadStatistic = () => ({
-  type: LOADING_STATISTIC
+  type: ACTIONS.LOADING_STATISTIC
 });
 
 export const loadStatisticSuccess = (statistic) => ({
-  type: LOADING_STATISTIC_SUCCESS,
+  type: ACTIONS.LOADING_STATISTIC_SUCCESS,
   payload: { statistic }
 });
 
 export const loadStatisticError = (error) => ({
-  type: LOADING_STATISTIC_ERROR,
+  type: ACTIONS.LOADING_STATISTIC_ERROR,
   payload: { error }
 });
 
+export const setDate = (date) => ({
+  type: ACTIONS.SET_DATE,
+  payload: { date }
+});
+
 const initState = {
-  statistic: {},
+  data: {
+    date: new Date(),
+    statistic: [],
+    bills: []
+  },
   isLoading: false,
   error: ''
 };
 
 const statisticReducer = (state = initState, action) => {
   switch (action.type) {
-    case LOADING_STATISTIC:
+    case ACTIONS.SET_DATE:
+      return { ...state, isLoading: true, error: '', data: { ...state.data, ...action.payload } }
+    case ACTIONS.LOADING_STATISTIC:
       return { ...state, isLoading: true, error: '' }
-    case LOADING_STATISTIC_SUCCESS:
-      return { ...state, isLoading: false,  statistic: action.payload.statistic }
-    case LOADING_STATISTIC_ERROR:
+    case ACTIONS.LOADING_STATISTIC_SUCCESS:
+      return { ...state, isLoading: false,  data: { ...state.data, ...action.payload.statistic } }
+    case ACTIONS.LOADING_STATISTIC_ERROR:
       return { statistic: {}, isLoading: false,  error: action.payload.error }
     default:
       return state

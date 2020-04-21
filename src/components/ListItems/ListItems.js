@@ -3,10 +3,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import BarChart from '@material-ui/icons/BarChart';
 import Receipt from '@material-ui/icons/Receipt';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -14,15 +14,7 @@ export const mainListItems = (
     <Link to="/dashboard" style={{ color: 'inherit', textDecoration: 'inherit'}}>
       <ListItem button>
         <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItem>
-    </Link>
-    <Link to="/budget" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-      <ListItem button>
-        <ListItemIcon>
-          <MonetizationOnIcon />
+          <BarChart />
         </ListItemIcon>
         <ListItemText primary="Бюджет" />
       </ListItem>
@@ -33,6 +25,14 @@ export const mainListItems = (
           <Receipt />
         </ListItemIcon>
         <ListItemText primary="Добавить чек" />
+      </ListItem>
+    </Link>
+    <Link to="/shoppingList" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+      <ListItem button>
+        <ListItemIcon>
+          <ShoppingBasketIcon />
+        </ListItemIcon>
+        <ListItemText primary="Список покупок" />
       </ListItem>
     </Link>
   </div>

@@ -7,7 +7,6 @@ import moment from 'moment';
 
 import { Api } from '../../../api/Api';
 
-
 const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(2),
@@ -21,12 +20,12 @@ export default function({ requisites, setData }) {
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [missing, setMissing] = useState(false);
 
-  //mock setData({"document":{"receipt":{"ecashTotalSum":40449,"fiscalDriveNumber":"9280440300332772","fiscalDocumentNumber":10756,"taxationType":0,"shiftNumber":187,"userInn":"7728029110","operationType":1,"receiptCode":3,"items":[{"price":649,"name":"1:3305976 Пакет ПЕРЕКРЕСТОК майка 65х40см","quantity":1,"sum":649},{"price":4790,"name":"2:3945535 Изд.бул.ДВИНСКИЙ ЗАВАРНОЙ 350г","quantity":1,"sum":4790},{"price":32900,"name":"3:3693812 Ребрышки ПРЕМИУМ 1кг","quantity":0.876,"sum":28820},{"price":6190,"name":"4:3695123 Смесь MAGGI НА ВТОРОЕ 30г","quantity":1,"sum":6190}],"fiscalSign":283222882,"nds20":1140,"dateTime":"2020-03-20T15:24:00","requestNumber":26,"totalSum":40449,"nds10":3055,"rawData":"AwAwAhEEEAA5MjgwNDQwMzAwMzMyNzcyDQQUADAwMDI2NDgwNDgwMzY2ODggICAg+gMMADc3MjgwMjkxMTAgIBAEBAAEKgAA9AMEABDgdF41BAYAMQQQ4aNiDgQEALsAAAASBAQAGgAAAB4EAQAB/AMCAAGeIwRTAAYEKQAxOjMzMDU5NzYgj6CqpeIgj4WQhYqQhZGSjoogrKCpqqAgNjXlNDDhrDcEAgCJAv8DAgAAARMEAgCJAq8EAQABsAQBAGy8BAEAAb4EAQAEIwRTAAYEKAAyOjM5NDU1MzUgiKekLqHjqy6EgoiNkYqIiSCHgIKAkI2OiSAzNTCjNwQCALYS/wMCAAABEwQCALYSrwQBAAKwBAIAswG8BAEAAb4EAQAEIwRKAAYEHgAzOjM2OTM4MTIgkKWh4Ovoqqggj5CFjIiTjCAxqqM3BAIAhID/AwMAA2wDEwQCAJRwrwQBAAKwBAIAPAq8BAEAAb4EAQAEIwROAAYEIwA0OjM2OTUxMjMgkayl4ewgTUFHR0kgjYAggpKOkI6FIDMwozcEAgAuGP8DAgAAARMEAgAuGK8EAQABsAQCAAgEvAQBAAG+BAEABAcEAQAAOQQCAAGevwQBAADABAEAAMEEAQAA/QMtAIqg4eGo4C2v4K6koKKl5iCMqOCu6K2o56Wtqq4gjqvso6AgjaiqrqugpaKtoLMEDAAzMjAzMDIwNDU5NzkfBAEAAbkEAQACTgQCAHQETwQCAO8L","cashTotalSum":0,"kktRegId":"0002648048036688    ","operator":"Кассир-продавец Мирошниченко Ольга Николаевна"}}})
   const getBill = (fn, fd, fp, time, sum) => {
+    setMissing(false);
     setError(false);
     setLoading(true);
-    console.log('loading1: ', loading)
     const transformTime = time => moment(time).format('YYYY-MM-DDTHH:mm:ss');
     const transformSum = sum => sum.replace('.', '');
     Api.checkBill(fn, fd, fp, transformTime(time), transformSum(sum))
@@ -35,7 +34,6 @@ export default function({ requisites, setData }) {
     )
     .then(data => {
       if(data.document) {
-        console.log('loading2: ', loading)
         setLoading(false);
         setData(data);
       } else {
@@ -44,10 +42,27 @@ export default function({ requisites, setData }) {
       }
     })
     .catch((e) => {
-      setLoading(false);
       setError(true);
+      setLoading(false);
+      setMissing(true);
     });
   }
+
+  const missingMessage = () => (<>
+    <span>
+      Внимание! Чек в системе не найден.
+      <br />
+      Возможные причины:
+      <br />
+      "Магазин еще не отправил данные по чеку в налоговую систему"
+      <br />
+      "Данные по чеку введены не верно (ручной ввод)"
+      <br />
+      <Button disabled={loading} onClick={() => setData({ document: { receipt: {} } })} color="primary" >
+        Чек будет загружен при появлении в системе. Продолжить?
+      </Button>
+    </span>
+  </>);
 
   return (
     <>
@@ -116,7 +131,12 @@ export default function({ requisites, setData }) {
         }
       </Grid>
       <Grid item align="center" xs={12}>
-        {error ? 'Сервер перегружен, попробуйте еще раз.' : ''}
+        {
+          (error && missing)
+          ? missingMessage()
+          : ''
+        }
+        {(error && !missing) ? 'Сервер налоговой не отвечает, попробуйте еще раз.' : ''}
       </Grid>
     </>
   )

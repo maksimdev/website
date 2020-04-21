@@ -70,7 +70,7 @@ export default function({ setData }) {
         ? (
           <Grid item align="center" xs={12}>
             <Button color="primary" onClick={() => setData(billInfo)}>
-              Поиск
+              Подтвердить
             </Button>
           </Grid>
           )

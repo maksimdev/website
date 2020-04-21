@@ -10,6 +10,7 @@ import Cached from '@material-ui/icons/Cached';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import Receipt from '@material-ui/icons/Receipt';
 import Title from '../Title/Title';
+import { convertValueToMoneyFormat, convertDate } from '../../utils/utils';
 
 export default function Receipts({ data = [], isLoading }) {
   return (
@@ -27,10 +28,16 @@ export default function Receipts({ data = [], isLoading }) {
         <TableBody>
           {data.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.totalsum}</TableCell>
-              <TableCell>{row.datetime}</TableCell>
+              <TableCell>{convertValueToMoneyFormat(row.totalsum)}</TableCell>
+              <TableCell>{convertDate(row.datetime)}</TableCell>
               <TableCell>{row.status === 'PENDING' ? <Cached /> : <CheckCircle />}</TableCell>
-              <TableCell align="right">{row.status === 'pending' ? <></> : <Link to={`/receipts/${row.id}`}><Receipt /></Link>}</TableCell>
+              <TableCell align="right">
+                {
+                  row.status === 'PENDING'
+                  ? <></>
+                  : <Link to={`/receipts/${row.id}`}><Receipt /></Link>
+                }
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,23 +1,12 @@
 import React from 'react';
+import Title from '../Title/Title';
+import Grid from '@material-ui/core/Grid';
 import { Line } from 'react-chartjs-2';
-import groupBy from 'lodash/groupBy';
-
-const prepareData = (data) => {
-  const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-  const groupedByYear = groupBy(data, "year");
-  const years = Object.keys(groupedByYear).sort();
-  const labels = years.reduce((acc, year) => {
-    return [ ...acc, ...groupedByYear[year].sort((a, b) => (a.month - b.month)).map(item => `${months[item.month - 1]} ${year}`)]
-  }, []);
-
-  const values = years.reduce((acc, year) => {
-    return [ ...acc, ...groupedByYear[year].sort((a, b) => (a.month - b.month)).map(item => item.sum)]
-  }, []);
-  return { labels, values };
-}
 
 function chartData(data) {
-  const { labels, values } = prepareData(data);
+  const labels = data.map(item => item.datetime);
+  const values = data.map(item => item.totalsum);
+
   return {
     labels: labels,
     datasets: [
@@ -41,12 +30,15 @@ export default class LineChart extends React.Component {
   render() {
     return (
       <div>
+        <Grid container justify="flex-start">
+          <Title>Расходы по месяцам</Title>
+        </Grid>
         <Line
           height={500}
           options={{
             maintainAspectRatio: false,
             title: {
-              display: true,
+              display: false,
               text: 'Ежемесечные рассходы'
             },
             legend: {

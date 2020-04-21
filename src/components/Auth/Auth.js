@@ -11,19 +11,18 @@ import SignIn from './../SignIn/SignIn';
 import SignUp from './../SignUp/SignUp';
 import Main from '../Main/Main';
 import Dashboard from '../Dashboard/Dashboard';
-import Budget from '../../componentsOld/Budget/Budget';
 import Receipt from '../Receipt/Receipt';
 import Stepper from '../Stepper/Stepper';
+import ConnectedShopingList from '../ShoppingList/ShopingList'
+import ShoppingCart from '../ShoppingCart/ShoppingCart'
 
-function PublicPage() {
-  return <h3>Public</h3>;
-}
+const PublicPage = () => <h3>Public</h3>;
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-function Auth({ history, isAuthenticated, cookies }) {
+function Auth({ history, isAuthenticated }) {
 
   function PrivateRoute({ children, ...rest }) {
     return (
@@ -82,14 +81,17 @@ function Auth({ history, isAuthenticated, cookies }) {
         <PrivateRoute path="/dashboard">
           <Dashboard />
         </PrivateRoute>
-        <PrivateRoute path="/budget">
-          <Budget />
-        </PrivateRoute>
         <PrivateRoute path="/bill">
           <Stepper />
         </PrivateRoute>
         <PrivateRoute path="/receipts/:id">
           <Receipt />
+        </PrivateRoute>
+        <PrivateRoute path="/shoppingList/:id">
+          <ShoppingCart />
+        </PrivateRoute>
+        <PrivateRoute path="/shoppingList">
+          <ConnectedShopingList />
         </PrivateRoute>
         <LoginRoute path="/">
           <SignIn />

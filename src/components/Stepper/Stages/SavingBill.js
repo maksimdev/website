@@ -14,6 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import moment from 'moment';
 
 import { Api } from '../../../api/Api';
+import { convertValueToMoneyFormat } from '../../../utils/utils';
 
 const useStyles = makeStyles({
   root: {
@@ -43,8 +44,8 @@ export default function({ requisites, bill, saveBill, setData }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const saveBillRequest = (bill, fn, fd, fdp, t, s) => {
-    const request = bill.document ? bill.document : { fn, fd, fdp, t, s };
+  const saveBillRequest = (bill, fn, fd, fp, t, s) => {
+    const request = bill.document.receipt.items ? bill.document : { fn, fd, fp, t, s };
     setError(false);
     setLoading(true);
     Api.createReceipt(request)
@@ -60,8 +61,6 @@ export default function({ requisites, bill, saveBill, setData }) {
   }
 
   const getFormattedBill = ({ document: { receipt: { userInn, dateTime, totalSum, items } }}) => {
-
-    const priceFormat = (price) => `${price}`.substring(0, `${price}`.length - 2) + '.' + `${price}`.substr(-2);
 
     const generateTable = (items) => {
       return (
@@ -82,9 +81,9 @@ export default function({ requisites, bill, saveBill, setData }) {
                   {i + 1}
                 </TableCell>
                 <TableCell align="right">{item.name}</TableCell>
-                <TableCell align="right">{priceFormat(item.price)}</TableCell>
+                <TableCell align="right">{convertValueToMoneyFormat(item.price)}</TableCell>
                 <TableCell align="right">{item.quantity}</TableCell>
-                <TableCell align="right">{priceFormat(item.sum)}</TableCell>
+                <TableCell align="right">{convertValueToMoneyFormat(item.sum)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -100,21 +99,30 @@ export default function({ requisites, bill, saveBill, setData }) {
             </Button>
           }
           title={
-            error ? 'Сервер перегружен, попробуйте еще раз.' : ''
+            error
+            ? 'Сервер перегружен, попробуйте еще раз.'
+            : bill.document.receipt.items
+              ? ''
+              : 'Чек будет загружен при появлении его в системе'
           }
         />
-        <CardContent>
-          <Typography className={classes.title} color="textSecondary" gutterBottom>
-            ИНН {userInn}
-          </Typography>
-          <Typography component="h3">
-            {moment(dateTime).format('YYYY.MM.DD HH:mm')}
-          </Typography>
-            {generateTable(items)}
-          <Typography variant="h4">
-            ИТОГО: {priceFormat(totalSum)} руб
-          </Typography>
-        </CardContent>
+        {
+          bill.document.receipt.items
+          ? (
+            <CardContent>
+              <Typography className={classes.title} color="textSecondary" gutterBottom>
+                ИНН {userInn}
+              </Typography>
+              <Typography component="h3">
+                {moment(dateTime).format('YYYY.MM.DD HH:mm')}
+              </Typography>
+                {generateTable(items)}
+              <Typography variant="h4">
+                ИТОГО: {convertValueToMoneyFormat(totalSum)} руб
+              </Typography>
+            </CardContent>
+          ) : ''
+        }
       </Card>
     );
   }

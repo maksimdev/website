@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { Api } from '../../api/Api';
-import { loadReceiptsError, loadReceiptsSuccess, LOADING_RECEIPTS } from '../reducers/receiptsReducer';
+import { loadReceiptsError, loadReceiptsSuccess } from '../reducers/receiptsReducer';
+import { ACTIONS } from '../../constants/constants'
 
 function* loadData() {
   try {
@@ -12,5 +13,5 @@ function* loadData() {
 }
 
 export function* receiptsSaga() {
-  yield takeLatest(LOADING_RECEIPTS, loadData);
+  yield takeLatest(ACTIONS.LOADING_RECEIPTS, loadData);
 }

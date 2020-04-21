@@ -11,7 +11,6 @@ import Search from '@material-ui/icons/Search';
 import Grid from '@material-ui/core/Grid';
 import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import ScanningQR from './Stages/ScanningQR';
 import SearchingBill from './Stages/SearchingBill';
 import SavingBill from './Stages/SavingBill';
@@ -159,9 +158,6 @@ export default function CustomStepper() {
     }
   }
 
-  console.log('bill: ', bill);
-  console.log('requisites: ', requisites);
-  
   return (
     <div className={classes.root}>
       <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>

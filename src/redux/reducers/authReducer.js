@@ -1,23 +1,21 @@
-export const LOGIN_REQUEST_SUCCESS = 'LOGIN_REQUEST_SUCCESS';
-export const LOGIN_REQUEST_FAILED = 'LOGIN_REQUEST_FAILED';
-export const LOGOUT = 'LOGOUT';
+import { ACTIONS } from '../../constants/constants';
 
 export function logOut(payload) {
   return {
-    type: LOGOUT
+    type: ACTIONS.LOGOUT
   };
 }
 
 export function loginRequestSuccess(payload) {
   return {
-    type: LOGIN_REQUEST_SUCCESS,
+    type: ACTIONS.LOGIN_REQUEST_SUCCESS,
     payload
   };
 }
 
 export function loginRequestFailed(payload) {
   return {
-    type: LOGIN_REQUEST_FAILED,
+    type: ACTIONS.LOGIN_REQUEST_FAILED,
     payload
   };
 }
@@ -31,11 +29,11 @@ const resetToken = () => localStorage.clear();
 
 const authReducer = (state = initState, action) => {
   switch (action.type) {
-    case LOGIN_REQUEST_SUCCESS:
+    case ACTIONS.LOGIN_REQUEST_SUCCESS:
       return { ...state,  ...action.payload }
-    case LOGIN_REQUEST_FAILED:
+    case ACTIONS.LOGIN_REQUEST_FAILED:
       return { ...state,  ...action.payload }
-    case LOGOUT:
+    case ACTIONS.LOGOUT:
         resetToken();
         return { isAuthenticated: false, user: ''}
     default:
