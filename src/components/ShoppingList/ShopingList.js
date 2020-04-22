@@ -35,7 +35,7 @@ const mapStateToProps = state => ({
 
 const mapDispachToProps = dispatch => ({
   getAllShopingLists: () => dispatch(loadShopingLists())
-})
+});
 
 function ListItemLink(props) {
   const { icon, primary, to } = props;

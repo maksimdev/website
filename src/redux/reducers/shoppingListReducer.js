@@ -14,17 +14,12 @@ export const loadingShopingListsError = (error) =>({
   error
 });
 
-export const loadShopingListById = () => ({
-  type: ACTIONS.LOADING_SHOPING_LIST_BY_ID,
-});
-
 
 
 const initState = {
     isLoading: false,
     lists: [],
     error: '',
-    listById: {},
 };
   
 const shoppingListReducer = (state = initState, action) => {
