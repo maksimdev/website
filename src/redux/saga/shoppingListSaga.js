@@ -1,11 +1,11 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { getAllShopingLists } from '../../api/Api';
+import { Api } from '../../api/Api';
 import { loadingShopingListsSuccess, loadingShopingListsError } from '../reducers/shoppingListReducer';
 import { ACTIONS } from '../../constants/constants'
 
 function* loadData() {
   try {
-    const data = yield call(getAllShopingLists, 100);
+    const data = yield call(Api.getShopingLists);
     yield put(loadingShopingListsSuccess(data));
   } catch (err) {
     yield put(loadingShopingListsError({error: 'Error: smth went wrong' }));

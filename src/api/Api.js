@@ -18,6 +18,8 @@ export const Api = {
     createReceipt: receipt => customFetch(true, 'POST', '/dev/receipt', receipt),
     loadReceipt: id => customFetch(true, 'GET', `/dev/receipts/${id}`),
     getStatistic: (year, month) => customFetch(true, 'GET', `/dev/statistic?year=${year}&month=${month}`),
+    getShopingLists: () => customFetch(true, 'GET', '/dev/shoppingLists'),
+    add
 
     //old
     getCategories: () => customFetch(true, 'GET', '/dev/categories'), 
@@ -35,50 +37,50 @@ const mockAPIRequest = (data, ms) => (new Promise(function(res, rej){
 }));
 
 
-export const getAllShopingLists = () => (mockAPIRequest([
-    {
-      listId: 1,
-      listTitle: 'На дачу',
-      timestamp: '2020-03-20 14:23:00',
-      items: [
-        {
-          id: 1,
-          name: 'Картоха',
-          category: 'Еда',
-          amount: '2000',
-          status: false
-        },
-        {
-          id: 2,
-          name: 'Маркошка',
-          category: 'Еда',
-          amount: '1500',
-          status: false
-        }
-      ]
-    },
-    {
-      listId: 2,
-      listTitle: 'Домой',
-      timestamp: '2020-03-20 14:23:00',
-      items: [
-        {
-          id: 1,
-          name: 'Молоко',
-          category: 'Еда',
-          amount: '2',
-          status: false
-        },
-        {
-          id: 2,
-          name: 'Хлеб',
-          category: 'Еда',
-          amount: '1',
-          status: false
-        }
-      ]
-    },
-  ], 1000))
+// export const getAllShopingLists = () => (mockAPIRequest([
+//     {
+//       listId: 1,
+//       listTitle: 'На дачу',
+//       timestamp: '2020-03-20 14:23:00',
+//       items: [
+//         {
+//           id: 1,
+//           name: 'Картоха',
+//           category: 'Еда',
+//           amount: '2000',
+//           status: false
+//         },
+//         {
+//           id: 2,
+//           name: 'Маркошка',
+//           category: 'Еда',
+//           amount: '1500',
+//           status: false
+//         }
+//       ]
+//     },
+//     {
+//       listId: 2,
+//       listTitle: 'Домой',
+//       timestamp: '2020-03-20 14:23:00',
+//       items: [
+//         {
+//           id: 1,
+//           name: 'Молоко',
+//           category: 'Еда',
+//           amount: '2',
+//           status: false
+//         },
+//         {
+//           id: 2,
+//           name: 'Хлеб',
+//           category: 'Еда',
+//           amount: '1',
+//           status: false
+//         }
+//       ]
+//     },
+//   ], 1000))
 
 
 export const getShopingCart = () => mockAPIRequest({

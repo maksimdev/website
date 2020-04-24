@@ -1,4 +1,4 @@
-import React, {useEffect, Fragment } from 'react';
+import React, {useEffect, useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -9,12 +9,36 @@ import Divider from '@material-ui/core/Divider';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Button } from '@material-ui/core';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
+
+import './ShopingList.css'
 
 
 import { loadShopingLists } from '../../redux/reducers/shoppingListReducer'
+
+const createList = (title, setTitle) => (
+  <ListItem selected={true}>
+      <ListItemIcon>
+        <ListAltIcon />
+      </ListItemIcon>
+      <TextField id="outlined-basic" label="Название" variant="outlined" size="small" value={title} onChange={(e) => setTitle(event.target.value)} />
+      <ButtonGroup variant="text" color="default" aria-label="text primary button group">
+        <Button onClickCapture={() => (console.log('ok'))}>
+          <CheckIcon />
+        </Button>
+        <Button>
+          <CloseIcon />
+        </Button>
+      </ButtonGroup>
+  </ListItem>
+)
 
 const useStyles = makeStyles((theme) => ({
   linkContainer: {
@@ -48,28 +72,32 @@ function ListItemLink(props) {
   );
 
   return (
-    <div>
-      <ListItem button component={renderLink}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={primary} />
-        <Button onClick={() => console.log('ok')}>
+    <ListItem button component={renderLink}>
+      <ListItemIcon>{icon}</ListItemIcon>
+      <ListItemText primary={primary} />
+      <ButtonGroup variant="text" color="default" aria-label="text primary button group">
+        <Button onClickCapture={() => (console.log('ok'))}>
+          <EditIcon />
+        </Button>
+        <Button>
           <DeleteOutlineIcon />
         </Button>
-      </ListItem> 
-    </div>
+      </ButtonGroup>
+    </ListItem>
   );
 }
 
-function createListOfLists(arr) {
+function createListOfLists(arr, isFormVisible, setFormVisible, title, setTitle) {
   return (
     <Fragment>
-      <Button variant="contained" color="primary" >
-        <AddIcon />
+      <Button variant="contained" color="primary" onClick={() => setFormVisible(!isFormVisible)}>
+        <PostAddIcon />
       </Button>
+      { isFormVisible ? createList(title, setTitle) : null }
       <List component="nav" aria-label="list of lists">
-        { arr.map(item => {
+        { arr.map(({id, title}) => {
           return(
-            <ListItemLink key={item.listId} to={'/shoppingList/' + item.listId} primary={item.listTitle} icon={<ListAltIcon />} />
+            <ListItemLink key={id} to={'/shoppingList/' + id} primary={title} icon={<ListAltIcon />} />
           )
         })}
       </List>
@@ -79,13 +107,16 @@ function createListOfLists(arr) {
 }
 
 function ShopingList({getAllShopingLists, lists, isLoading}) {
+  const [isFormVisible, setFormVisible] = useState(false);
+  const [title, setTitle] = useState('');
   const classes = useStyles();
   useEffect(() => {
     getAllShopingLists()
   }, [])
+  console.log('title: ', title)
   return (
     <div className={classes.root}>
-      { isLoading ? <LinearProgress /> : createListOfLists(lists) }
+      { isLoading ? <LinearProgress /> : createListOfLists(lists, isFormVisible, setFormVisible, title, setTitle) }
     </div>
   );
 }
