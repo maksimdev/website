@@ -1,4 +1,4 @@
-const URL = 'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';;//'http://localhost:3000';//'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';
+const URL = 'https://52mezyyznb.execute-api.us-east-1.amazonaws.com';;//'http://localhost:3000';//'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';
 
 const customFetch = (isSecure, method, path, body) => fetch(
   `${URL}${path}`, {

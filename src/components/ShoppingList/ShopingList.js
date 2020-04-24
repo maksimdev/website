@@ -8,10 +8,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { ButtonGroup } from '@material-ui/core';
 import { Button } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import AddIcon from '@material-ui/icons/Add';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -19,9 +17,13 @@ import { Link as RouterLink } from 'react-router-dom';
 import { loadShopingLists } from '../../redux/reducers/shoppingListReducer'
 
 const useStyles = makeStyles((theme) => ({
+  linkContainer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
   root: {
     width: '100%',
-    maxWidth: 600,
+    maxWidth: 400,
     backgroundColor: theme.palette.background.paper,
     margin: 'auto',
   },
@@ -46,41 +48,27 @@ function ListItemLink(props) {
   );
 
   return (
+    <div>
       <ListItem button component={renderLink}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={primary} />
-        <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                <Button>
-                  <DeleteIcon />
-                </Button>
-                <Button>
-                  <EditIcon />
-                </Button>
-              </ButtonGroup>
-      </ListItem>
+        <Button onClick={() => console.log('ok')}>
+          <DeleteOutlineIcon />
+        </Button>
+      </ListItem> 
+    </div>
   );
 }
 
 function createListOfLists(arr) {
   return (
     <Fragment>
+      <Button variant="contained" color="primary" >
+        <AddIcon />
+      </Button>
       <List component="nav" aria-label="list of lists">
         { arr.map(item => {
           return(
-            // <ListItem button key={item.listId}>
-            //   <ListItemIcon>
-            //     <ListAltIcon />
-            //   </ListItemIcon>
-            //   <ListItemText primary={item.listTitle} />
-            //   <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-            //     <Button>
-            //       <DeleteIcon />
-            //     </Button>
-            //     <Button>
-            //       <EditIcon />
-            //     </Button>
-            //   </ButtonGroup>
-            // </ListItem>
             <ListItemLink key={item.listId} to={'/shoppingList/' + item.listId} primary={item.listTitle} icon={<ListAltIcon />} />
           )
         })}
@@ -97,9 +85,6 @@ function ShopingList({getAllShopingLists, lists, isLoading}) {
   }, [])
   return (
     <div className={classes.root}>
-      <Button variant="contained" color="primary" className={'addButton'} >
-        <AddIcon />
-      </Button>
       { isLoading ? <LinearProgress /> : createListOfLists(lists) }
     </div>
   );

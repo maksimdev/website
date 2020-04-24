@@ -2,12 +2,14 @@ import React, { useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Checkbox from '@material-ui/core/Checkbox';
+import AddIcon from '@material-ui/icons/Add';
 
 import { loadShopingCart, changeFlag } from '../../redux/reducers/ShoppingCartReduser';
 
@@ -31,11 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createCart(arr, handleChange) {
+function createCart(items, handleChange) {
   return (
     <Fragment>
       <List>
-        { arr.map(({id, status, name, amount}) => {
+        { items.map(({id, status, name, amount}) => {
           return(
             <ListItem button key={id} selected={status} onClick={()=>handleChange(id, status)}>
                 <Checkbox
@@ -52,36 +54,28 @@ function createCart(arr, handleChange) {
   )
 }
 
-function generateListOfPickedItems(items, handleChange) {
-  const pickedItems = items.filter(({ status }) => status === true);
-  return createCart(pickedItems, handleChange)
-}
-
-function generateListOfUnpickedItems(items, handleChange) {
-  const unpickedItems = items.filter(item => item.status === false);
-  return createCart(unpickedItems, handleChange)
-};
-
-function generateLists(items, handleChange) {
-  return(
-    <Fragment>
-      {generateListOfUnpickedItems(items, handleChange)}
-      <Divider />
-      {generateListOfPickedItems(items, handleChange)}
-    </Fragment>
-  )
-}
-
 function ShoppingCart({ getShoppingCart, list, isLoading, handleChange}) {
   const classes = useStyles();
   const { id } = useParams();
   useEffect(() => {
     getShoppingCart(id)
   }, [])
-  console.log('cart: ', list.items)
+  const pickedItems = list.items.filter(({ status }) => status === true);
+  const unpickedItems = list.items.filter(({ status }) => status === false);
+
   return (
     <div className={classes.root}>
-      { isLoading ? <LinearProgress /> : generateLists(list.items, handleChange) }
+      { isLoading
+        ? <LinearProgress />
+        : <Fragment>
+            <Button variant="contained" color="primary" >
+              <AddIcon />
+            </Button>
+            {createCart(unpickedItems, handleChange)}
+            <Divider />
+            {createCart(pickedItems, handleChange)}
+          </Fragment>
+      }
     </div>
   );
 }
