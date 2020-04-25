@@ -1,6 +1,55 @@
 import React from 'react';
 import Title from '../Title/Title';
 import Grid from '@material-ui/core/Grid';
+import { Line, Bar } from 'react-chartjs-2';
+
+export default class CustomChart extends React.Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    return (
+      <div>
+        <Grid container justify="flex-start">
+          <Title>{this.props.title}</Title>
+        </Grid>
+        {
+          this.props.chartType === 'Line'
+          ? <Line
+              height={300}
+              options={{
+                maintainAspectRatio: false,
+                legend: {
+                  display: true,
+                  position: 'bottom'
+                }
+              }}
+              data={this.props.data}
+            />
+          : <Bar
+          height={300}
+          options={{
+            maintainAspectRatio: false,
+            legend: {
+              display: true,
+              position: 'bottom'
+            }
+          }}
+          data={this.props.data}
+        />
+      } 
+      </div>
+    )
+  }
+};
+
+/*
+
+import React from 'react';
+import Title from '../Title/Title';
+import Grid from '@material-ui/core/Grid';
 import { Line } from 'react-chartjs-2';
 
 function chartData(data) {
@@ -33,14 +82,10 @@ export default class LineChart extends React.Component {
         <Grid container justify="flex-start">
           <Title>Расходы по месяцам</Title>
         </Grid>
-        <Line
+        <Bar
           height={500}
           options={{
             maintainAspectRatio: false,
-            title: {
-              display: false,
-              text: 'Ежемесечные рассходы'
-            },
             legend: {
               display: true,
               position: 'bottom'
@@ -52,3 +97,5 @@ export default class LineChart extends React.Component {
     )
   }
 };
+
+*/
