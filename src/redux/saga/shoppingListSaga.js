@@ -1,6 +1,6 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { Api } from '../../api/Api';
-import { loadingShopingListsSuccess, loadingShopingListsError } from '../reducers/shoppingListReducer';
+import { loadingShopingListsSuccess, loadingShopingListsError, addListSuccess, addListError, deleteListSuccess, deleteListError } from '../reducers/shoppingListReducer';
 import { ACTIONS } from '../../constants/constants'
 
 function* loadData() {
@@ -12,6 +12,30 @@ function* loadData() {
   } 
 };
 
+function* addList({ title }) {
+  try {
+    const list = yield call(Api.addList, title);
+    yield put(addListSuccess(list));
+  } catch (error) {
+    yield put(addListError(error));
+  }
+}
+
+function* deleteList({ id }) {
+  try {
+    yield call(Api.deleteList, id);
+    yield put(deleteListSuccess(id));
+  } catch (error) {
+    yield put(deleteListError(error));
+  }
+}
+
+
 export function* shoppingListSaga() {
-  yield takeEvery(ACTIONS.LOADING_SHOPING_LIST, loadData)
+  yield all([
+    takeEvery(ACTIONS.LOADING_SHOPING_LIST, loadData),
+    takeEvery(ACTIONS.ADD_LIST, addList),
+    takeEvery(ACTIONS.DELETE_LIST, deleteList),
+  ])
+  
 }

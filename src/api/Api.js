@@ -19,7 +19,8 @@ export const Api = {
     loadReceipt: id => customFetch(true, 'GET', `/dev/receipts/${id}`),
     getStatistic: (year, month) => customFetch(true, 'GET', `/dev/statistic?year=${year}&month=${month}`),
     getShopingLists: () => customFetch(true, 'GET', '/dev/shoppingLists'),
-    add
+    addList: title => customFetch(true, 'POST', `/dev/shoppingList`, { title }),
+    deleteList: id => customFetch(true, 'DELETE', `/dev/shoppingList?id=${id}`),
 
     //old
     getCategories: () => customFetch(true, 'GET', '/dev/categories'), 

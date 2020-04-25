@@ -17,26 +17,34 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './ShopingList.css'
 
+import { loadShopingLists, addList, deleteList } from '../../redux/reducers/shoppingListReducer'
 
-import { loadShopingLists } from '../../redux/reducers/shoppingListReducer'
+function handleLoading(addList, title, isFormLoading, setLoading) {
+  setLoading(!isFormLoading);
+  addList(title)
+};
 
-const createList = (title, setTitle) => (
+const createList = (title, setTitle, addList, isFormLoading, setLoading, deleteList) => (
   <ListItem selected={true}>
       <ListItemIcon>
         <ListAltIcon />
       </ListItemIcon>
       <TextField id="outlined-basic" label="Название" variant="outlined" size="small" value={title} onChange={(e) => setTitle(event.target.value)} />
-      <ButtonGroup variant="text" color="default" aria-label="text primary button group">
-        <Button onClickCapture={() => (console.log('ok'))}>
-          <CheckIcon />
-        </Button>
-        <Button>
-          <CloseIcon />
-        </Button>
-      </ButtonGroup>
+      { 
+        isFormLoading
+          ? <CircularProgress size={30} className="spinner" />
+          : <ButtonGroup variant="text" color="default" aria-label="text primary button group">
+            <Button onClick={() => handleLoading(addList, title, isFormLoading, setLoading)}>
+              <CheckIcon />
+            </Button>
+            <Button>
+              <CloseIcon />
+            </Button>
+          </ButtonGroup>}
   </ListItem>
 )
 
@@ -60,12 +68,18 @@ const mapStateToProps = state => ({
 });
 
 const mapDispachToProps = dispatch => ({
-  getAllShopingLists: () => dispatch(loadShopingLists())
+  getAllShopingLists: () => dispatch(loadShopingLists()),
+  addList: title => dispatch(addList(title)),
+  deleteList: id => dispatch(deleteList(id))
 });
 
-function ListItemLink(props) {
-  const { icon, primary, to } = props;
+function onBtnClick(id, callback, event) {
+  
+  event.preventDefault();
+  callback(id);
+};
 
+function ListItemLink({ icon, primary, to, deleteList, id, isFormLoading, setLoading}) {
   const renderLink = React.useMemo(
     () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
     [to],
@@ -75,29 +89,43 @@ function ListItemLink(props) {
     <ListItem button component={renderLink}>
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={primary} />
-      <ButtonGroup variant="text" color="default" aria-label="text primary button group">
-        <Button onClickCapture={() => (console.log('ok'))}>
-          <EditIcon />
-        </Button>
-        <Button>
-          <DeleteOutlineIcon />
-        </Button>
-      </ButtonGroup>
+        <ButtonGroup variant="text" color="default" aria-label="text primary button group">
+          <Button onClick={event => onBtnClick(event, editList)}>
+            <EditIcon />
+          </Button>
+          <Button onClick={onBtnClick.bind({}, id, deleteList)}>
+            <DeleteOutlineIcon />
+          </Button>
+        </ButtonGroup>
     </ListItem>
   );
 }
 
-function createListOfLists(arr, isFormVisible, setFormVisible, title, setTitle) {
+function createListOfLists( 
+  arr,
+  isFormVisible,
+  setFormVisible,
+  title,
+  setTitle,
+  addList,
+  isFormLoading,
+  setLoading,
+  deleteList,
+) {
   return (
     <Fragment>
       <Button variant="contained" color="primary" onClick={() => setFormVisible(!isFormVisible)}>
         <PostAddIcon />
       </Button>
-      { isFormVisible ? createList(title, setTitle) : null }
+      { 
+        isFormVisible
+          ? createList(title, setTitle, addList, isFormLoading, setLoading)
+          : null
+      }
       <List component="nav" aria-label="list of lists">
         { arr.map(({id, title}) => {
           return(
-            <ListItemLink key={id} to={'/shoppingList/' + id} primary={title} icon={<ListAltIcon />} />
+          <ListItemLink id={id} key={id} to={'/shoppingList/' + id} primary={title} icon={<ListAltIcon />} deleteList={deleteList} isFormLoading={isFormLoading} setLoading={setLoading} />
           )
         })}
       </List>
@@ -106,17 +134,36 @@ function createListOfLists(arr, isFormVisible, setFormVisible, title, setTitle) 
   )
 }
 
-function ShopingList({getAllShopingLists, lists, isLoading}) {
+function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList}) {
   const [isFormVisible, setFormVisible] = useState(false);
   const [title, setTitle] = useState('');
+  const [isFormLoading, setLoading] = useState(false);
   const classes = useStyles();
   useEffect(() => {
     getAllShopingLists()
-  }, [])
-  console.log('title: ', title)
+  }, []);
+  useEffect(() => {    
+    setLoading(false);
+    setFormVisible(false);
+    setTitle('')
+  }, [lists])
   return (
     <div className={classes.root}>
-      { isLoading ? <LinearProgress /> : createListOfLists(lists, isFormVisible, setFormVisible, title, setTitle) }
+      { 
+        isLoading
+          ? <LinearProgress />
+          : createListOfLists(
+            lists,
+            isFormVisible,
+            setFormVisible,
+            title,
+            setTitle,
+            addList,
+            isFormLoading,
+            setLoading,
+            deleteList,
+          )
+      }
     </div>
   );
 }
