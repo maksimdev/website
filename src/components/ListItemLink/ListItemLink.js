@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,19 +9,22 @@ import EditIcon from '@material-ui/icons/Edit';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { EditItem } from '../EditItem/EditItem'
+import { EditItem }  from '../EditItem/EditItem'
 
-import './ListItemLinkComponent.css';
+import './ListItemLink.css';
 
-export function ListItemLink({ icon, primary, to, id, deleteList, createListForm }) {
+export function ListItemLink({ icon, primary, to, id, deleteList, editList }) {
   const [isEdit, setEdit] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const editList = (id) => console.log(id);
+
+  useEffect(() => {
+    setLoading(false);
+    setEdit(false);
+  }, [primary]);
   
   const onEditBtnClick = (event) => {
     event.preventDefault();
     setEdit(!isEdit);
-    editList(id);
   };
 
   const onDeleteBtnClick = (id, callback, event) => {
@@ -36,19 +39,24 @@ export function ListItemLink({ icon, primary, to, id, deleteList, createListForm
     [to],
   );
 
-  const saveEditBtn = () => {
-    console.log('save');
-    setEdit(!isEdit);
+  const saveEditBtn = (title, id) => {
+    setLoading(!isLoading);
+    editList(id, title);
   };
 
   const cancelEditBtn = () => {
-    console.log('cansel');
     setEdit(!isEdit);
   };
 
   return (
     isEdit
-    ? <EditItem onCheck={saveEditBtn} onCancel={cancelEditBtn} lable={primary} />
+    ? <EditItem
+        onSubmit={saveEditBtn}
+        onCancel={cancelEditBtn}
+        listId={id}
+        lable={primary}
+        isFormLoading={isLoading}
+      />
     : <ListItem button component={renderLink}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={primary} />

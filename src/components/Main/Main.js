@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Main({ logout, user, children, amountInPendingStatus }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const handleDrawerOpen = () => {
     setOpen(true);

@@ -44,10 +44,33 @@ export const deleteListError = error => ({
   error
 });
 
+export const editList = (id, title) => ({
+  type: ACTIONS.EDIT_LIST,
+  id,
+  title,
+});
+
+export const editListSuccess = (id, title) => ({
+  type: ACTIONS.EDIT_LIST_SUCCESS,
+  id,
+  title,
+});
+
+export const editListError = error => ({
+  type: ACTIONS.EDIT_LIST_ERROR,
+  error
+});
+
 const deleteListById = (listId, lists) => (
   lists.filter(({ id }) => id !== listId )
-)
+);
 
+const editListById = (lists, listId, newTitle) => {
+  console.log('lists, listId, newTitle: ', lists, listId, newTitle);
+  const item = lists.find(({id}) => id == listId);
+  item.title = newTitle;
+  return lists
+}
 const initState = {
     isLoading: false,
     lists: [],
@@ -68,6 +91,11 @@ const shoppingListReducer = (state = initState, action) => {
       return {...state, lists: deleteListById(action.id, state.lists)}
     case ACTIONS.DELETE_LIST_ERROR:
       return { ...state, error: action.error.message }
+    case ACTIONS.EDIT_LIST_SUCCESS:
+      return {...state, lists: [...editListById(state.lists, action.id, action.title)]}
+    case ACTIONS.EDIT_LIST_ERROR:
+      return { ...state, error: action.error.message }
+
     default:
       return state
   }

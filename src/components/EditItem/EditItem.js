@@ -13,14 +13,15 @@ import './EditItem.css';
 
 export function EditItem(
   { 
-    onCheck,
+    onSubmit,
     onCancel,
+    listId=null,
     lable = 'Название',
-    isFormLoading=null,
-    title = '',
-    setTitle = null
+    isFormLoading = null,
+    value = '',
   }
-) {  
+) {
+  const [title, setTitle] = useState(value);
   return (
     <ListItem selected={true}>
       <ListItemIcon>
@@ -32,13 +33,13 @@ export function EditItem(
         variant="outlined"
         size="small"
         value={title}
-        onChange={(e) => setTitle(event.target.value)}
+        onChange={(event) => setTitle(event.target.value)}
       />
         { 
           isFormLoading
             ? <CircularProgress size={30} className="spinner" />
             : <ButtonGroup variant="text" color="default" aria-label="text primary button group">
-              <Button onClick={() => onCheck()}>
+              <Button onClick={() => onSubmit(title, listId)}>
                 <CheckIcon />
               </Button>
               <Button onClick={() => onCancel()}

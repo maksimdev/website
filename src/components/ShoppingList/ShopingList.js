@@ -9,8 +9,8 @@ import Button from '@material-ui/core/Button';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import { EditItem } from '../EditItem/EditItem'
-import { ListItemLink } from '../ListItemLinkComponent/ListItemLinkComponent'
-import { loadShopingLists, addList, deleteList } from '../../redux/reducers/shoppingListReducer'
+import { ListItemLink } from '../ListItemLink/ListItemLink'
+import { loadShopingLists, addList, deleteList, editList } from '../../redux/reducers/shoppingListReducer'
 
 const useStyles = makeStyles((theme) => ({
   linkContainer: {
@@ -34,13 +34,13 @@ const mapStateToProps = state => ({
 const mapDispachToProps = dispatch => ({
   getAllShopingLists: () => dispatch(loadShopingLists()),
   addList: title => dispatch(addList(title)),
-  deleteList: id => dispatch(deleteList(id))
+  deleteList: id => dispatch(deleteList(id)),
+  editList: (title, id) => dispatch(editList(title, id))
 });
 
-function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList}) {
+function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList, editList}) {
   const [isFormVisible, setFormVisible] = useState(false);
   const [isFormLoading, setLoading] = useState(false);
-  const [title, setTitle] = useState('');
   
   const classes = useStyles();
   useEffect(() => {
@@ -49,17 +49,15 @@ function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList}
   useEffect(() => {    
     setLoading(false);
     setFormVisible(false);
-    setTitle('')
   }, [lists])
 
-  const handleLoading = () => {
+  const saveList = (title) => {
     setLoading(!isFormLoading);
     addList(title)
   };
 
   const cancelCreationList = () => {
     setFormVisible(false);
-    setTitle('');
   };
   
   const createListOfLists = () => ( 
@@ -70,11 +68,10 @@ function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList}
     { 
       isFormVisible
         ? <EditItem 
-          onCheck={handleLoading}
+          onSubmit={saveList}
           onCancel={cancelCreationList}
           isFormLoading={isFormLoading}
-          title={title}
-          setTitle={setTitle}/>
+          />
         : null
     }
     <List component="nav" aria-label="list of lists">
@@ -87,7 +84,7 @@ function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList}
           primary={title}
           icon={<ListAltIcon />}
           deleteList={deleteList}
-          editItem={<EditItem />}
+          editList={editList}
         />
         )
       })}

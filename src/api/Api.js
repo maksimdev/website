@@ -7,7 +7,7 @@ const customFetch = (isSecure, method, path, body) => fetch(
         ...isSecure ? ({'Authorization': 'Bearer ' + localStorage.getItem('token')}) : {},
         'Content-Type': 'application/json'
     },
-    ...(method === 'POST' || method === 'PATCH') ? ({
+    ...(method === 'POST' || method === 'PATCH' || method === 'PUT' ) ? ({
       body: JSON.stringify(body)
     }) : {}
   }).then((response) => response.json());
@@ -21,6 +21,7 @@ export const Api = {
     getShopingLists: () => customFetch(true, 'GET', '/dev/shoppingLists'),
     addList: title => customFetch(true, 'POST', `/dev/shoppingList`, { title }),
     deleteList: id => customFetch(true, 'DELETE', `/dev/shoppingList?id=${id}`),
+    editList: (id, title) => customFetch(true, 'PUT', `/dev/shoppingList?id=${id}`, { title }),
 
     //old
     getCategories: () => customFetch(true, 'GET', '/dev/categories'), 
@@ -36,93 +37,3 @@ export const Api = {
 const mockAPIRequest = (data, ms) => (new Promise(function(res, rej){
   setTimeout(() => res(data), ms)
 }));
-
-
-// export const getAllShopingLists = () => (mockAPIRequest([
-//     {
-//       listId: 1,
-//       listTitle: 'На дачу',
-//       timestamp: '2020-03-20 14:23:00',
-//       items: [
-//         {
-//           id: 1,
-//           name: 'Картоха',
-//           category: 'Еда',
-//           amount: '2000',
-//           status: false
-//         },
-//         {
-//           id: 2,
-//           name: 'Маркошка',
-//           category: 'Еда',
-//           amount: '1500',
-//           status: false
-//         }
-//       ]
-//     },
-//     {
-//       listId: 2,
-//       listTitle: 'Домой',
-//       timestamp: '2020-03-20 14:23:00',
-//       items: [
-//         {
-//           id: 1,
-//           name: 'Молоко',
-//           category: 'Еда',
-//           amount: '2',
-//           status: false
-//         },
-//         {
-//           id: 2,
-//           name: 'Хлеб',
-//           category: 'Еда',
-//           amount: '1',
-//           status: false
-//         }
-//       ]
-//     },
-//   ], 1000))
-
-
-export const getShopingCart = () => mockAPIRequest({
-  listId: 1,
-  listTitle: 'На дачу',
-  timestamp: '2020-03-20 14:23:00',
-  items: [
-    {
-      id: 1,
-      name: 'Картоха',
-      category: 'Еда',
-      amount: '2 кг',
-      status: false
-    },
-    {
-      id: 2,
-      name: 'Маркошка',
-      category: 'Еда',
-      amount: '1,5 кг',
-      status: false
-    },
-    {
-      id: 3,
-      name: 'Сыр',
-      category: 'Еда',
-      amount: '0,5 кг',
-      status: false
-    },
-    {
-      id: 4,
-      name: 'Яйца',
-      category: 'Еда',
-      amount: '30 шт',
-      status: false
-    },
-    {
-      id: 5,
-      name: 'Шоколадка',
-      category: 'Еда',
-      amount: '1 шт',
-      status: false
-    }
-  ]
-}, 2000)
