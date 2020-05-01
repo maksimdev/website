@@ -1,7 +1,6 @@
 import { routerReducer } from 'react-router-redux'
 import authReducer from './authReducer';
 import statisticReducer from './statisticReducer';
-import receiptsReducer from './receiptsReducer';
 import shoppingListReducer from './shoppingListReducer';
 import shoppingCartReducer from './ShoppingCartReduser';
 

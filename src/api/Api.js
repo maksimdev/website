@@ -1,4 +1,4 @@
-const URL = 'https://52mezyyznb.execute-api.us-east-1.amazonaws.com';;//'http://localhost:3000';//'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';
+const URL = 'http://localhost:3000';;//'http://localhost:3000';//'https://2rjrexhdd0.execute-api.us-east-1.amazonaws.com';
 
 const customFetch = (isSecure, method, path, body) => fetch(
   `${URL}${path}`, {
@@ -10,7 +10,7 @@ const customFetch = (isSecure, method, path, body) => fetch(
     ...(method === 'POST' || method === 'PATCH' || method === 'PUT' ) ? ({
       body: JSON.stringify(body)
     }) : {}
-  }).then((response) => response.json());
+  }).then((response) => response.status !== 204 ? response.json() : {}); //check it(error with 204 no content). It is not cool :-(
   
 export const Api = {
     login: (user, password) => customFetch(true, 'POST', '/dev/login', { username: user, password }),

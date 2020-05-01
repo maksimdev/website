@@ -45,7 +45,7 @@ export default function({ requisites, bill, saveBill, setData }) {
   const [loading, setLoading] = useState(false);
 
   const saveBillRequest = (bill, fn, fd, fp, t, s) => {
-    const request = bill.document.receipt.items ? bill.document : { fn, fd, fp, t, s };
+    const request = bill.document.receipt.items ? bill.document : { fn, fd, fp, t, s: +s * 100 };
     setError(false);
     setLoading(true);
     Api.createReceipt(request)
