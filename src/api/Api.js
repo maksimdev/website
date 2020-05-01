@@ -22,6 +22,14 @@ export const Api = {
     addList: title => customFetch(true, 'POST', `/dev/shoppingList`, { title }),
     deleteList: id => customFetch(true, 'DELETE', `/dev/shoppingList?id=${id}`),
     editList: (id, title) => customFetch(true, 'PUT', `/dev/shoppingList?id=${id}`, { title }),
+    getShopingCart: id => customFetch(true, 'GET', `/dev/shoppingList?id=${id}`),
+    addItem: (listId, name, category, amount, status) => customFetch(
+      true,
+      'POST',
+      `/dev/shoppingItem`,
+      {name, category, amount, status, listId }
+    ),
+    deleteItem: id => customFetch(true, 'DELETE', `/dev/shoppingItem?id=${id}`),
 
     //old
     getCategories: () => customFetch(true, 'GET', '/dev/categories'), 

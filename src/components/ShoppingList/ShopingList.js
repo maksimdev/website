@@ -62,7 +62,11 @@ function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList,
   
   const createListOfLists = () => ( 
     <Fragment>
-    <Button variant="contained" color="primary" onClick={() => setFormVisible(!isFormVisible)}>
+    <Button
+      variant="contained"
+      color="primary" 
+      onClick={() => setFormVisible(!isFormVisible)}
+    >
       <PostAddIcon />
     </Button>
     { 

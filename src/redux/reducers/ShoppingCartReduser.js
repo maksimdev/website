@@ -1,7 +1,8 @@
 import { ACTIONS } from '../../constants/constants';
 
-export const loadShopingCart = () => ({
+export const loadShopingCart = (id) => ({
   type: ACTIONS.LOADING_SHOPING_CART,
+  id,
 });
 
 export const loadingShopingCartSuccess = (list) =>({
@@ -18,13 +19,53 @@ export const changeFlag = (id, status) => ({
   type: ACTIONS.CHANGE_FLAG,
   id,
   status,
-})
+});
+
+export const addItem = (title, amount, category, status, listId) => ({
+  type: ACTIONS.ADD_ITEM,
+  title,
+  amount,
+  category,
+  status,
+  listId,
+});
+
+export const addItemSuccess = (item) => ({
+  type: ACTIONS.ADD_ITEM_SUCCESS,
+  item
+});
+
+export const addItemError = (error) =>({
+  type: ACTIONS.ADD_ITEM_ERROR,
+  error
+});
+
+export const deleteItem = id => ({
+  type: ACTIONS.DELETE_ITEM,
+  id
+});
+
+export const deleteItemSuccess = (id) => ({
+  type: ACTIONS.DELETE_ITEM_SUCCESS,
+  id
+});
+
+export const deleteItemError = (error) =>({
+  type: ACTIONS.DELETE_ITEM_ERROR,
+  error
+});
+
+
 
 function filterArr(arr, id, status) {
   const item = arr.find(item => item.id == id);
   item.status = !status;
   return arr
 }
+
+const deleteItemById = (items, itemId) => (
+  items.filter(({ id }) => id !== itemId )
+);
 
 const initState = {
   isLoading: false,
@@ -44,7 +85,14 @@ const shoppingCartReducer = (state = initState, action) => {
       return { ...state, isLoading: false, error: action.error.message }
     case ACTIONS.CHANGE_FLAG:
       return {...state, list: {...state.list, items: filterArr(state.list.items, action.id, action.status)}}
-
+    case ACTIONS.ADD_ITEM_SUCCESS:
+      return {...state, list: {...state.list, items: [action.item, ...state.list.items]}}
+    case ACTIONS.ADD_ITEM_ERROR:
+      return { ...state, error: action.error.message }
+    case ACTIONS.DELETE_ITEM_SUCCESS:
+      return {...state, list: {...state.list, items: deleteItemById(state.list.items, action.id)}}
+    case ACTIONS.DELETE_ITEM_ERROR:
+      return { ...state, error: action.error.message }
     default:
       return state
   }
