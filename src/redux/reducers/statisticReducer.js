@@ -23,7 +23,7 @@ const initState = {
   data: {
     date: new Date(),
     statistic: [],
-    bills: []
+    billRequests: []
   },
   isLoading: false,
   error: ''

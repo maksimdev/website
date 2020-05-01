@@ -14,7 +14,6 @@ const customFetch = (isSecure, method, path, body) => fetch(
   
 export const Api = {
     login: (user, password) => customFetch(true, 'POST', '/dev/login', { username: user, password }),
-    getReceipts: () => customFetch(true, 'GET', '/dev/receipts'),
     createReceipt: receipt => customFetch(true, 'POST', '/dev/receipt', receipt),
     loadReceipt: id => customFetch(true, 'GET', `/dev/receipts/${id}`),
     getStatistic: (year, month) => customFetch(true, 'GET', `/dev/statistic?year=${year}&month=${month}`),

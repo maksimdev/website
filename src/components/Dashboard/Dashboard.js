@@ -50,12 +50,12 @@ function Dashboard({ statistic, setDate }) {
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <Receipts data={statistic.data.statistic} isLoading={statistic.isLoading} />
+            <Receipts data={statistic.data.billRequests} isLoading={statistic.isLoading} />
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <LineChart data={prepareDataToChart(statistic.data.statistic)} />
+            <LineChart data={prepareDataToChart(statistic.data.billRequests)} />
           </Paper>
         </Grid>
       </Grid>

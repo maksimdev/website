@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  amountInPendingStatus: getAmountInPendingStatus(state.receipts.list)
+  amountInPendingStatus: getAmountInPendingStatus(state.statistic.data.billRequests)
 });
 
 function Copyright() {
