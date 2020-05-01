@@ -1,5 +1,5 @@
 import React from "react";
-import Stepper from "../../componentsOld/Stepper/Stepper";
+import Stepper from "../../components/Stepper/Stepper";
 
 export default function() {
   return (

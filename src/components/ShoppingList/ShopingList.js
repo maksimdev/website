@@ -1,27 +1,25 @@
-import React, {useEffect, Fragment } from 'react';
+import React, {useEffect, useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { ButtonGroup } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-import { Link as RouterLink } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 
-
-import { loadShopingLists } from '../../redux/reducers/shoppingListReducer'
+import { EditItem } from '../EditItem/EditItem'
+import { ListItemLink } from '../ListItemLink/ListItemLink'
+import { loadShopingLists, addList, deleteList, editList } from '../../redux/reducers/shoppingListReducer'
 
 const useStyles = makeStyles((theme) => ({
+  linkContainer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
   root: {
     width: '100%',
-    maxWidth: 600,
+    maxWidth: 400,
     backgroundColor: theme.palette.background.paper,
     margin: 'auto',
   },
@@ -34,73 +32,74 @@ const mapStateToProps = state => ({
 });
 
 const mapDispachToProps = dispatch => ({
-  getAllShopingLists: () => dispatch(loadShopingLists())
-})
+  getAllShopingLists: () => dispatch(loadShopingLists()),
+  addList: title => dispatch(addList(title)),
+  deleteList: id => dispatch(deleteList(id)),
+  editList: (title, id) => dispatch(editList(title, id))
+});
 
-function ListItemLink(props) {
-  const { icon, primary, to } = props;
-
-  const renderLink = React.useMemo(
-    () => React.forwardRef((itemProps, ref) => <RouterLink to={to} ref={ref} {...itemProps} />),
-    [to],
-  );
-
-  return (
-      <ListItem button component={renderLink}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={primary} />
-        <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                <Button>
-                  <DeleteIcon />
-                </Button>
-                <Button>
-                  <EditIcon />
-                </Button>
-              </ButtonGroup>
-      </ListItem>
-  );
-}
-
-function createListOfLists(arr) {
-  return (
-    <Fragment>
-      <List component="nav" aria-label="list of lists">
-        { arr.map(item => {
-          return(
-            // <ListItem button key={item.listId}>
-            //   <ListItemIcon>
-            //     <ListAltIcon />
-            //   </ListItemIcon>
-            //   <ListItemText primary={item.listTitle} />
-            //   <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-            //     <Button>
-            //       <DeleteIcon />
-            //     </Button>
-            //     <Button>
-            //       <EditIcon />
-            //     </Button>
-            //   </ButtonGroup>
-            // </ListItem>
-            <ListItemLink key={item.listId} to={'/shoppingList/' + item.listId} primary={item.listTitle} icon={<ListAltIcon />} />
-          )
-        })}
-      </List>
-      <Divider />
-    </Fragment>  
-  )
-}
-
-function ShopingList({getAllShopingLists, lists, isLoading}) {
+function ShopingList({getAllShopingLists, lists, addList, isLoading, deleteList, editList}) {
+  const [isFormVisible, setFormVisible] = useState(false);
+  const [isFormLoading, setLoading] = useState(false);
+  
   const classes = useStyles();
   useEffect(() => {
     getAllShopingLists()
-  }, [])
+  }, []);
+  useEffect(() => {    
+    setLoading(false);
+    setFormVisible(false);
+  }, [lists])
+
+  const saveList = (title) => {
+    setLoading(!isFormLoading);
+    addList(title)
+  };
+
+  const cancelCreationList = () => {
+    setFormVisible(false);
+  };
+  
+  const createListOfLists = () => ( 
+    <Fragment>
+    <Button
+      variant="contained"
+      color="primary" 
+      onClick={() => setFormVisible(!isFormVisible)}
+    >
+      <PostAddIcon />
+    </Button>
+    { 
+      isFormVisible
+        ? <EditItem 
+          onSubmit={saveList}
+          onCancel={cancelCreationList}
+          isFormLoading={isFormLoading}
+          />
+        : null
+    }
+    <List component="nav" aria-label="list of lists">
+      { lists.map(({id, title}) => {
+        return(
+        <ListItemLink 
+          id={id}
+          key={id}
+          to={'/shoppingList/' + id}
+          primary={title}
+          icon={<ListAltIcon />}
+          deleteList={deleteList}
+          editList={editList}
+        />
+        )
+      })}
+    </List>
+    <Divider />
+  </Fragment>  
+  );
+
   return (
     <div className={classes.root}>
-      <Button variant="contained" color="primary" className={'addButton'} >
-        <AddIcon />
-      </Button>
-      { isLoading ? <LinearProgress /> : createListOfLists(lists) }
+      { isLoading ? <LinearProgress /> : createListOfLists() }
     </div>
   );
 }
