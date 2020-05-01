@@ -46,10 +46,10 @@ const prepareDataToChart = ({ date, billRequests }) => {
     labels: labels,
     datasets: [
       {
-        label: 'Расходов за день',
+        label: 'Расходы',
         borderColor: '#483D8B',
         pointBackgroundColor: '#424242',
-        backgroundColor: 'rgba(12, 126, 55, 0.1)',
+        backgroundColor: 'rgba(84, 25, 139, 0.5)',
         data: values
       }
     ]
