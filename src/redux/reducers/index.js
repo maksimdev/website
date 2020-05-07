@@ -9,7 +9,6 @@ export default {
   routing: routerReducer,
   auth: authReducer,
   statistic: statisticReducer,
-  receipts: receiptsReducer,
   shoppingList: shoppingListReducer,
   shoppingCart: shoppingCartReducer,
 };
