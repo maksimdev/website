@@ -15,7 +15,7 @@ export function EditItem(
   { 
     onSubmit,
     onCancel,
-    listId=null,
+    shoppinglistid=null,
     lable = 'Название',
     isFormLoading = null,
     value = '',
@@ -39,7 +39,7 @@ export function EditItem(
           isFormLoading
             ? <CircularProgress size={30} className="spinner" />
             : <ButtonGroup variant="text" color="default" aria-label="text primary button group">
-              <Button onClick={() => onSubmit(title, listId)}>
+              <Button onClick={() => onSubmit(title, shoppinglistid)}>
                 <CheckIcon />
               </Button>
               <Button onClick={() => onCancel()}

@@ -53,7 +53,7 @@ export function ListItemLink({ icon, primary, to, id, deleteList, editList }) {
     ? <EditItem
         onSubmit={saveEditBtn}
         onCancel={cancelEditBtn}
-        listId={id}
+        shoppinglistid={id}
         lable={primary}
         isFormLoading={isLoading}
       />

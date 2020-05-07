@@ -11,8 +11,9 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { loadShopingCart, changeFlag, addItem, deleteItem } from '../../redux/reducers/ShoppingCartReduser';
+import { loadShopingCart, updateStatus, addItem, deleteItem } from '../../redux/reducers/ShoppingCartReduser';
 import { CreateItemForm } from '../CreateItemForm/CreateItemForm';
 
 const mapStateToProps = state => ({
@@ -23,9 +24,9 @@ const mapStateToProps = state => ({
 
 const mapDispachToProps = dispatch => ({
   getShoppingCart: id => dispatch(loadShopingCart(id)),
-  handleChange: (id, status) => dispatch(changeFlag(id, status)),
-  addItem: (title, amount, category, status, listId) => 
-    dispatch(addItem(title, amount, category, status, listId)),
+  handleChange: (id, status) => dispatch(updateStatus(id, status)),
+  addItem: (title, amount, category, status, shoppinglistid) => 
+    dispatch(addItem(title, amount, category, status, shoppinglistid)),
   deleteItem: id => dispatch(deleteItem(id))
 });
 

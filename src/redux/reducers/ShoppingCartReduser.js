@@ -15,19 +15,25 @@ export const loadingShopingCartError = (error) =>({
   error
 });
 
-export const changeFlag = (id, status) => ({
+export const changeFlag = ({ id, status }) => ({
   type: ACTIONS.CHANGE_FLAG,
   id,
   status,
 });
 
-export const addItem = (title, amount, category, status, listId) => ({
+export const updateStatus = (id, status) => ({
+  type: ACTIONS.UPDATE_STATUS,
+  id,
+  status,
+});
+
+export const addItem = (title, amount, category, status, shoppinglistid) => ({
   type: ACTIONS.ADD_ITEM,
   title,
   amount,
   category,
   status,
-  listId,
+  shoppinglistid,
 });
 
 export const addItemSuccess = (item) => ({
@@ -59,7 +65,7 @@ export const deleteItemError = (error) =>({
 
 function filterArr(arr, id, status) {
   const item = arr.find(item => item.id == id);
-  item.status = !status;
+  item.status = status;
   return arr
 }
 
@@ -76,6 +82,8 @@ const initState = {
 };
 
 const shoppingCartReducer = (state = initState, action) => {
+  // console.log('action: ', action);
+  
   switch(action.type) {
     case ACTIONS.LOADING_SHOPING_CART:
       return { ...state, isLoading: true, error: '' }
